@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>GnatMQ</id>
+        <version>1.0.0.0</version>
+        <title>GnatMQ - MQTT Broker for .NET and WinRT</title>
+        <authors>Paolo Patierno</authors>
+        <owners>Paolo Patierno</owners>
+        <licenseUrl>https://mqttbroker.codeplex.com/license</licenseUrl>
+        <projectUrl>https://mqttbroker.codeplex.com</projectUrl>
+        <iconUrl>https://download-codeplex.sec.s-msft.com/Download?ProjectName=mqttbroker&amp;DownloadId=817141&amp;Build=21028</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT platforms too (Windows 8.1 and Windows Phone 8.1).</description>
+        <summary>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT platforms too (Windows 8.1 and Windows Phone 8.1</summary>
+        <releaseNotes>First release</releaseNotes>
+        <copyright>Paolo Patierno Copyright 2015</copyright>
+        <tags>m2m mqtt queue messaging internetofthings iot cloud winrt windows8 windows8.1 windowsphone windowsphone8.1 broker</tags>
+    </metadata>
+    <files>
+        <file src="bin\Release\GnatMQ.Net\*.*" target="lib\net45" />
+        <file src="bin\Release\GnatMQ.WinRT\*.*" target="lib\win81" />
+        <file src="bin\Release\GnatMQ.WinRT\*.*" target="lib\wpa81" />
+		<file src="bin\Release\GnatMQ.NetCf39\*.*" target="lib\netcf39" />
+    </files>
+</package>
