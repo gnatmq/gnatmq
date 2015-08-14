@@ -77,7 +77,7 @@ namespace uPLibrary.Networking.M2Mqtt
         {
         }
 
-#if !(WINDOWS_APP || WINDOWS_PHONE_APP)
+#if !(WINDOWS_APP || WINDOWS_PHONE_APP || MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
         /// <summary>
         /// Constructor (TCP/IP communication layer on port 8883 with SSL/TLS and default settings)
         /// </summary>
