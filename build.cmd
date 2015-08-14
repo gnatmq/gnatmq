@@ -1,5 +1,5 @@
 
-MSBuild.exe MQTTBrokerVS2013.sln /p:Configuration=Release
+MSBuild.exe GnatMQ.sln /p:Configuration=Release
 
 IF NOT EXIST ".\Build\Packages" MKDIR ".\Build\Packages"
 
