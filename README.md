@@ -1,5 +1,7 @@
 # GnatMQ
 
+![](images/gnat.jpg)
+
 GnatMQ - MQTT Broker for .NET and WinRT
 
 *Project Description*
