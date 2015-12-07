@@ -81,7 +81,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             session.InflightMessages = new Hashtable();
             foreach (MqttMsgContext msgContext in clientSession.InflightMessages.Values)
             {
-                session.InflightMessages.Add(msgContext.Message.MessageId, msgContext);
+                session.InflightMessages.Add(msgContext.Key, msgContext);
             }
         }
 
