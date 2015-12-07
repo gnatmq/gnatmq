@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2013, 2014 Paolo Patierno
 
 All rights reserved. This program and the accompanying materials
@@ -81,7 +81,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             session.InflightMessages = new Hashtable();
             foreach (MqttMsgContext msgContext in clientSession.InflightMessages.Values)
             {
-                session.InflightMessages.Add(msgContext.Message.MessageId, msgContext);
+                session.InflightMessages.Add(msgContext.Key, msgContext);
             }
         }
 
