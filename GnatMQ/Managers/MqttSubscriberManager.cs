@@ -287,7 +287,12 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
 
         public int GetHashCode(MqttSubscription obj)
         {
-            return obj.ClientId.GetHashCode();
+           if (this.Type == MqttSubscriptionComparerType.OnClientId)
+                return obj.ClientId.GetHashCode();
+            else if (this.Type == MqttSubscriptionComparerType.OnTopic)
+                return obj.Topic.GetHashCode();
+            else
+                return 0;
         }
 
         /// <summary>
