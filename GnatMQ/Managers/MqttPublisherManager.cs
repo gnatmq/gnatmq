@@ -257,7 +257,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                                 where (new Regex(s.Topic)).IsMatch(outgoingMsg.Topic)     // check for topics based also on wildcard with regex
                                 select s;
 
-                            MqttSubscription subscription = query.First();
+                            MqttSubscription subscription = query.FirstOrDefault();
 
                             if (subscription != null)
                             {
