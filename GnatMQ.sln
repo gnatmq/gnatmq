@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnatMQ.Net", "GnatMQ\GnatMQ.Net.csproj", "{4EBFA6E5-0636-496C-8C46-991B05DF7491}"
 EndProject
@@ -19,11 +19,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnatMQServerWinRT.WindowsPh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnatMQ.NetCf39", "GnatMQ\GnatMQ.NetCf39.csproj", "{CA48F760-2BE0-4B4C-90B8-13823BD5D22B}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GnatMqNetCore", "GnatMqNetCore.xproj", "{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		GnatMQServerWinRT\GnatMQServerWinRT.Shared\GnatMQServerWinRT.Shared.projitems*{bef58b3a-fed0-44ac-94ef-afa622f8bcf3}*SharedItemsImports = 4
-		GnatMQServerWinRT\GnatMQServerWinRT.Shared\GnatMQServerWinRT.Shared.projitems*{b0ab9f41-08ad-4f25-8507-a2af603e69fe}*SharedItemsImports = 4
 		GnatMQServerWinRT\GnatMQServerWinRT.Shared\GnatMQServerWinRT.Shared.projitems*{54cc644e-9557-4d11-9630-eb20406e9b1e}*SharedItemsImports = 13
+		GnatMQServerWinRT\GnatMQServerWinRT.Shared\GnatMQServerWinRT.Shared.projitems*{b0ab9f41-08ad-4f25-8507-a2af603e69fe}*SharedItemsImports = 4
+		GnatMQServerWinRT\GnatMQServerWinRT.Shared\GnatMQServerWinRT.Shared.projitems*{bef58b3a-fed0-44ac-94ef-afa622f8bcf3}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,6 +124,22 @@ Global
 		{CA48F760-2BE0-4B4C-90B8-13823BD5D22B}.Release|ARM.ActiveCfg = Release|Any CPU
 		{CA48F760-2BE0-4B4C-90B8-13823BD5D22B}.Release|x64.ActiveCfg = Release|Any CPU
 		{CA48F760-2BE0-4B4C-90B8-13823BD5D22B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Debug|x64.Build.0 = Debug|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Release|ARM.Build.0 = Release|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Release|x64.ActiveCfg = Release|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Release|x64.Build.0 = Release|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6EEED39D-AD31-49B3-8C6C-6111800C9E4B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

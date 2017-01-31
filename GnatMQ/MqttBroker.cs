@@ -27,7 +27,7 @@ using uPLibrary.Networking.M2Mqtt.Session;
 #if !(WINDOWS_APP || WINDOWS_PHONE_APP)
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
-#elif (MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3)
+#elif (MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || NET_CORE)
 using Microsoft.SPOT.Net.Security;
 #endif
 #endif
@@ -77,7 +77,7 @@ namespace uPLibrary.Networking.M2Mqtt
         {
         }
 
-#if !(WINDOWS_APP || WINDOWS_PHONE_APP || MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
+#if !(WINDOWS_APP || WINDOWS_PHONE_APP || MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || NET_CORE)
         /// <summary>
         /// Constructor (TCP/IP communication layer on port 8883 with SSL/TLS and default settings)
         /// </summary>
@@ -89,7 +89,7 @@ namespace uPLibrary.Networking.M2Mqtt
         }
 #endif
 
-#if !(WINDOWS_APP || WINDOWS_PHONE_APP || MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
+#if !(WINDOWS_APP || WINDOWS_PHONE_APP || MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || NET_CORE)
         /// <summary>
         /// Constructor (TCP/IP communication layer on port 8883 with SSL/TLS and default settings)
         /// </summary>

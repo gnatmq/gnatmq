@@ -15,6 +15,9 @@ Contributors:
 */
 
 using System.Collections;
+#if NET_CORE 
+using GnatMqNetCore.GnatMQ.Utility;
+#endif
 
 namespace uPLibrary.Networking.M2Mqtt.Session
 {

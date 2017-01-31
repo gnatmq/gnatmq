@@ -65,7 +65,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
         /// </summary>
         public MqttSslProtocols Protocol { get; private set; }
 
-#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
+#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || NET_CORE)
         /// <summary>
         /// A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party
         /// </summary>
@@ -83,7 +83,11 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
         private TcpListener listener;
 
         // TCP listener thread
+#if NET_CORE
+        private System.Threading.Tasks.Task thread;
+#else
         private Thread thread;
+#endif
         private bool isRunning;
 
         /// <summary>
@@ -91,7 +95,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
         /// </summary>
         /// <param name="port">TCP listening port</param>
         public MqttTcpCommunicationLayer(int port)
-#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
+#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || NET_CORE)
             : this(port, false, null, MqttSslProtocols.None, null, null)
 #else
             : this(port, false, null, MqttSslProtocols.None)
@@ -107,7 +111,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
         /// <param name="secure">Secure connection (SSL/TLS)</param>
         /// <param name="serverCert">X509 server certificate</param>
         /// <param name="protocol">SSL/TLS protocol version</param>
-#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
+#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || NET_CORE)
         /// <param name="userCertificateSelectionCallback">A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party</param>
         /// <param name="userCertificateValidationCallback">A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication</param>
         public MqttTcpCommunicationLayer(int port, bool secure, X509Certificate serverCert, MqttSslProtocols protocol,
@@ -124,7 +128,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
             this.Secure = secure;
             this.ServerCert = serverCert;
             this.Protocol = protocol;
-#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
+#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || NET_CORE)
             this.UserCertificateValidationCallback = userCertificateValidationCallback;
             this.UserCertificateSelectionCallback = userCertificateSelectionCallback;
 #endif
@@ -143,9 +147,14 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
             this.isRunning = true;
 
             // create and start listener thread
+#if NET_CORE
+            this.thread = new System.Threading.Tasks.Task(ListenerThread);
+#else
             this.thread = new Thread(this.ListenerThread);
             this.thread.Name = LISTENER_THREAD_NAME;
             this.thread.Start();
+#endif
+
         }
 
         /// <summary>
@@ -158,15 +167,23 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
             this.listener.Stop();
 
             // wait for thread
+#if NET_CORE
+            this.thread.Wait();
+#else
             this.thread.Join();
+#endif
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Listener thread for incoming connection requests
         /// </summary>
-        private void ListenerThread()
+#if NET_CORE
+        private async void ListenerThread()
+#else
+            private void ListenerThread()
+#endif
         {
             // create listener...
             this.listener = new TcpListener(IPAddress.IPv6Any, this.Port);
@@ -180,7 +197,11 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
                 try
                 {
                     // blocking call to wait for client connection
+#if NET_CORE
+                    Socket socketClient = await this.listener.AcceptSocketAsync();
+#else
                     Socket socketClient = this.listener.AcceptSocket();
+#endif
 
                     // manage socket client connected
                     if (socketClient.Connected)

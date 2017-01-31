@@ -14,7 +14,12 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
+using System;
 using System.Threading;
+
+#if NET_CORE
+using System.Threading.Tasks;
+#endif
 
 namespace uPLibrary.Networking.M2Mqtt
 {
@@ -23,14 +28,27 @@ namespace uPLibrary.Networking.M2Mqtt
     /// </summary>
     public class Fx
     {
+#if NET_CORE
+        public static void StartThread(Action threadStart)
+        {
+            new Task(threadStart).Start();
+        }
+#else
         public static void StartThread(ThreadStart threadStart)
         {
             new Thread(threadStart).Start();
         }
+#endif
 
         public static void SleepThread(int millisecondsTimeout)
         {
+#if NET_CORE
+            Task.Delay(millisecondsTimeout);
+#else
             Thread.Sleep(millisecondsTimeout);
+#endif
+
         }
+
     }
 }
