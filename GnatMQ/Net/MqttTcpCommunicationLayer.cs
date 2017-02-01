@@ -211,7 +211,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
 #if SSL
                         if (this.Secure)
                         {
-#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
+#if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || NET_CORE)
                             channel = new MqttNetworkChannel(socketClient, this.Secure, this.ServerCert, this.Protocol, this.UserCertificateValidationCallback, this.UserCertificateSelectionCallback);
 #else
                             channel = new MqttNetworkChannel(socketClient, this.Secure, this.ServerCert, this.Protocol);
