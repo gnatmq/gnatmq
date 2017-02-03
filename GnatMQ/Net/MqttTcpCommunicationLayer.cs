@@ -149,6 +149,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
             // create and start listener thread
 #if NET_CORE
             this.thread = new System.Threading.Tasks.Task(ListenerThread);
+            this.thread.Start();
 #else
             this.thread = new Thread(this.ListenerThread);
             this.thread.Name = LISTENER_THREAD_NAME;
