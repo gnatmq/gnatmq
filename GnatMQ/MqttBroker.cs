@@ -47,7 +47,7 @@ namespace uPLibrary.Networking.M2Mqtt
 
         // reference to publisher manager
         private MqttPublisherManager publisherManager;
-        
+
         // reference to subscriber manager
         private MqttSubscriberManager subscriberManager;
 
@@ -69,6 +69,11 @@ namespace uPLibrary.Networking.M2Mqtt
             set { this.uacManager.UserAuth = value; }
         }
 
+        //GQ
+        //public delegate void MqttSaveMessageDelegate(MqttMsgPublishEventArgs e);
+
+        //public MqttSaveMessageDelegate SaveMessage { get; set; }
+
         /// <summary>
         /// Constructor (TCP/IP communication layer on port 1883 and default settings)
         /// </summary>
@@ -83,8 +88,13 @@ namespace uPLibrary.Networking.M2Mqtt
         /// </summary>
         /// <param name="serverCert">X509 Server certificate</param>
         /// <param name="sslProtocol">SSL/TLS protocol versiokn</param>
-        public MqttBroker(X509Certificate serverCert, MqttSslProtocols sslProtocol)
-            : this(new MqttTcpCommunicationLayer(MqttSettings.MQTT_BROKER_DEFAULT_SSL_PORT, true, serverCert, sslProtocol, null, null), MqttSettings.Instance)
+        public MqttBroker(X509Certificate serverCert, MqttSslProtocols sslProtocol, int connectTimeout)
+            : this(new MqttTcpCommunicationLayer(MqttSettings.MQTT_BROKER_DEFAULT_SSL_PORT, true, serverCert, sslProtocol, connectTimeout, null, null), MqttSettings.Instance)
+        {
+        }
+
+        public MqttBroker(X509Certificate serverCert, MqttSslProtocols sslProtocol, int port, int connectTimeout)
+           : this(new MqttTcpCommunicationLayer(port, true, serverCert, sslProtocol, connectTimeout, null, null), MqttSettings.Instance)
         {
         }
 #endif
@@ -97,10 +107,10 @@ namespace uPLibrary.Networking.M2Mqtt
         /// <param name="sslProtocol">SSL/TLS protocol version</param>
         /// <param name="userCertificateSelectionCallback">A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party</param>
         /// <param name="userCertificateValidationCallback">A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication</param>
-        public MqttBroker(X509Certificate serverCert, MqttSslProtocols sslProtocol,
+        public MqttBroker(X509Certificate serverCert, MqttSslProtocols sslProtocol, int connectTimeout,
             RemoteCertificateValidationCallback userCertificateValidationCallback,
             LocalCertificateSelectionCallback userCertificateSelectionCallback)
-            : this(new MqttTcpCommunicationLayer(MqttSettings.MQTT_BROKER_DEFAULT_SSL_PORT, true, serverCert, sslProtocol, userCertificateValidationCallback, userCertificateSelectionCallback), MqttSettings.Instance)
+            : this(new MqttTcpCommunicationLayer(MqttSettings.MQTT_BROKER_DEFAULT_SSL_PORT, true, serverCert, sslProtocol, connectTimeout, userCertificateValidationCallback, userCertificateSelectionCallback), MqttSettings.Instance)
         {
         }
 #endif
@@ -117,7 +127,7 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // MQTT communication layer
             this.commLayer = commLayer;
-            this.commLayer.ClientConnected += commLayer_ClientConnected;           
+            this.commLayer.ClientConnected += commLayer_ClientConnected;
 
             // create managers (publisher, subscriber, session and UAC)
             this.subscriberManager = new MqttSubscriberManager();
@@ -220,9 +230,13 @@ namespace uPLibrary.Networking.M2Mqtt
             // [v3.1.1] DUP flag from an incoming PUBLISH message is not propagated to subscribers
             //          It should be set in the outgoing PUBLISH message based on transmission for each subscriber
             MqttMsgPublish publish = new MqttMsgPublish(e.Topic, e.Message, false, e.QosLevel, e.Retain);
-            
+
             // publish message through publisher manager
             this.publisherManager.Publish(publish);
+
+            //GQ
+            //if (SaveMessage != null)
+            //    this.SaveMessage(e);
         }
 
         void Client_MqttMsgUnsubscribeReceived(object sender, MqttMsgUnsubscribeEventArgs e)
@@ -412,7 +426,7 @@ namespace uPLibrary.Networking.M2Mqtt
             else
             {
                 // client id length exceeded (only for old MQTT 3.1)
-                if  ((connect.ProtocolVersion == MqttMsgConnect.PROTOCOL_VERSION_V3_1) &&
+                if ((connect.ProtocolVersion == MqttMsgConnect.PROTOCOL_VERSION_V3_1) &&
                      (connect.ClientId.Length > MqttMsgConnect.CLIENT_ID_MAX_LENGTH))
                     returnCode = MqttMsgConnack.CONN_REFUSED_IDENT_REJECTED;
                 else
