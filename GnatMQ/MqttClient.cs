@@ -874,8 +874,6 @@ namespace uPLibrary.Networking.M2Mqtt
             }
 
             this.receiveEventWaitHandle.Set();
-
-            //Thread.Sleep(50); //GQ
         }
 
         /// <summary>
@@ -1624,7 +1622,7 @@ namespace uPLibrary.Networking.M2Mqtt
                         close = ((ex.ErrorCode == MqttClientErrorCode.InvalidFlagBits) ||
                                 (ex.ErrorCode == MqttClientErrorCode.InvalidProtocolName) ||
                                 (ex.ErrorCode == MqttClientErrorCode.InvalidConnectFlags));
-                    } //GQ System.IO.IOException
+                    }
 #if !(WINDOWS_APP || WINDOWS_PHONE_APP)
                     else if ((e.GetType() == typeof(System.IO.IOException)) || (e.GetType() == typeof(SocketException)) ||
                              ((e.InnerException != null) && (e.InnerException.GetType() == typeof(SocketException)))) // added for SSL/TLS incoming connection that use SslStream that wraps SocketException
@@ -1736,7 +1734,7 @@ namespace uPLibrary.Networking.M2Mqtt
                     {
                         if (this.eventQueue.Count > 0)
                             internalEvent = (InternalEvent)this.eventQueue.Dequeue();
-                        //GQ
+                        
 #if TRACE
                         MqttUtility.Trace.WriteLine(TraceLevel.Verbose, "eventQueue count {0}", this.eventQueue.Count);
 #endif

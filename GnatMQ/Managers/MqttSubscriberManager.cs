@@ -216,7 +216,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                 // If a client is subscribed to multiple subscriptions with topics that overlap
                 // it has more entries into subscriptions list but broker sends only one message
                 this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
-                return query.Distinct(comparer).FirstOrDefault(); //GQ
+                return query.Distinct(comparer).FirstOrDefault();
             }
         }
 
@@ -296,8 +296,6 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             else
                 return false;
         }
-
-        //GQ
         public int GetHashCode(MqttSubscription obj)
         {
             if (this.Type == MqttSubscriptionComparerType.OnClientId)

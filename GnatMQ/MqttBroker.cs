@@ -69,11 +69,6 @@ namespace uPLibrary.Networking.M2Mqtt
             set { this.uacManager.UserAuth = value; }
         }
 
-        //GQ
-        //public delegate void MqttSaveMessageDelegate(MqttMsgPublishEventArgs e);
-
-        //public MqttSaveMessageDelegate SaveMessage { get; set; }
-
         /// <summary>
         /// Constructor (TCP/IP communication layer on port 1883 and default settings)
         /// </summary>
@@ -233,10 +228,6 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // publish message through publisher manager
             this.publisherManager.Publish(publish);
-
-            //GQ
-            //if (SaveMessage != null)
-            //    this.SaveMessage(e);
         }
 
         void Client_MqttMsgUnsubscribeReceived(object sender, MqttMsgUnsubscribeEventArgs e)
