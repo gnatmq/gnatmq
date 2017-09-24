@@ -16,7 +16,7 @@ In general, the MQTT environment consists of multiple clients and a server, call
 
 This project is created to develop an MQTT broker.  While there are other MQTT broker project, this project is created to provide additional resources to learn and engage in developing useful resources for the MQTT protocol, in conjunction with the M2Mqtt project, a .NET client library for MQTT that supports .NET Framework, .NET Compact Framework and .NET Micro Framework.
 
-The project has an official website here :  http://www.m2mqtt.net
+The project has an official website here :  https://m2mqtt.wordpress.com/
 
 For more information about MQTT, visit: http://www.mqtt.org
 
