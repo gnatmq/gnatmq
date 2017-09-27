@@ -178,24 +178,24 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <param name="topic">Topic to get subscription list</param>
         /// <param name="qosLevel">QoS level requested</param>
         /// <returns>Subscription list</returns>
-        public List<MqttSubscription> GetSubscriptions(string topic, byte qosLevel)
+       public List<MqttSubscription> GetSubscriptions(string topic, byte qosLevel)
         {
-           lock (this.subscribers)
+            lock (this.subscribers)
             {
-            var query = from ss in this.subscribers
-                        where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
-                        from s in this.subscribers[ss.Key]
-                        where s.QosLevel == qosLevel                // check for subscriber only with a specified QoS level granted
-                        select s;
+                var query = from ss in this.subscribers
+                            where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
+                            from s in this.subscribers[ss.Key]
+                            where s.QosLevel == qosLevel                // check for subscriber only with a specified QoS level granted
+                            select s;
 
-            // use comparer for multiple subscriptions that overlap (e.g. /test/# and  /test/+/foo)
-            // If a client is subscribed to multiple subscriptions with topics that overlap
-            // it has more entries into subscriptions list but broker sends only one message
-            this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
-            return query.Distinct(comparer).ToList();
+                // use comparer for multiple subscriptions that overlap (e.g. /test/# and  /test/+/foo)
+                // If a client is subscribed to multiple subscriptions with topics that overlap
+                // it has more entries into subscriptions list but broker sends only one message
+                this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
+                return query.Distinct(comparer).ToList();
             }
         }
-
+      
         /// <summary>
         /// Get a subscription for a specified topic and client
         /// </summary>
@@ -204,19 +204,19 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <returns>Subscription list</returns>
         public MqttSubscription GetSubscription(string topic, string clientId)
         {
-           lock (this.subscribers)
+            lock (this.subscribers)
             {
-            var query = from ss in this.subscribers
-                        where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
-                        from s in this.subscribers[ss.Key]
-                        where s.ClientId == clientId                // check for subscriber only with a specified Client Id
-                        select s;
+                var query = from ss in this.subscribers
+                            where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
+                            from s in this.subscribers[ss.Key]
+                            where s.ClientId == clientId                // check for subscriber only with a specified Client Id
+                            select s;
 
-            // use comparer for multiple subscriptions that overlap (e.g. /test/# and  /test/+/foo)
-            // If a client is subscribed to multiple subscriptions with topics that overlap
-            // it has more entries into subscriptions list but broker sends only one message
-            this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
-            return query.Distinct(comparer).FirstOrDefault();
+                // use comparer for multiple subscriptions that overlap (e.g. /test/# and  /test/+/foo)
+                // If a client is subscribed to multiple subscriptions with topics that overlap
+                // it has more entries into subscriptions list but broker sends only one message
+                this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
+                return query.Distinct(comparer).FirstOrDefault();
             }
         }
 
@@ -227,18 +227,18 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <returns>Subscription list</returns>
         public List<MqttSubscription> GetSubscriptionsByTopic(string topic)
         {
-           lock (this.subscribers)
+            lock (this.subscribers)
             {
-            var query = from ss in this.subscribers
-                        where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
-                        from s in this.subscribers[ss.Key]
-                        select s;
+                var query = from ss in this.subscribers
+                            where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
+                            from s in this.subscribers[ss.Key]
+                            select s;
 
-            // use comparer for multiple subscriptions that overlap (e.g. /test/# and  /test/+/foo)
-            // If a client is subscribed to multiple subscriptions with topics that overlap
-            // it has more entries into subscriptions list but broker sends only one message
-            this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
-            return query.Distinct(comparer).ToList();
+                // use comparer for multiple subscriptions that overlap (e.g. /test/# and  /test/+/foo)
+                // If a client is subscribed to multiple subscriptions with topics that overlap
+                // it has more entries into subscriptions list but broker sends only one message
+                this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
+                return query.Distinct(comparer).ToList();
             }
         }
 
@@ -249,21 +249,21 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <returns>Subscription lis</returns>
         public List<MqttSubscription> GetSubscriptionsByClient(string clientId)
         {
-           lock (this.subscribers)
+            lock (this.subscribers)
             {
-            var query = from ss in this.subscribers
-                        from s in this.subscribers[ss.Key]
-                        where s.ClientId == clientId
-                        select s;
+                var query = from ss in this.subscribers
+                            from s in this.subscribers[ss.Key]
+                            where s.ClientId == clientId
+                            select s;
 
-            // use comparer for multiple subscriptions that overlap (e.g. /test/# and  /test/+/foo)
-            // If a client is subscribed to multiple subscriptions with topics that overlap
-            // it has more entries into subscriptions list but broker sends only one message
-            //this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnTopic;
-            //return query.Distinct(comparer).ToList();
+                // use comparer for multiple subscriptions that overlap (e.g. /test/# and  /test/+/foo)
+                // If a client is subscribed to multiple subscriptions with topics that overlap
+                // it has more entries into subscriptions list but broker sends only one message
+                //this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnTopic;
+                //return query.Distinct(comparer).ToList();
 
-            // I need all subscriptions, also overlapped (used to save session)
-            return query.ToList();
+                // I need all subscriptions, also overlapped (used to save session)
+                return query.ToList();
             }
         }
     }
@@ -296,10 +296,9 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             else
                 return false;
         }
-
         public int GetHashCode(MqttSubscription obj)
         {
-           if (this.Type == MqttSubscriptionComparerType.OnClientId)
+            if (this.Type == MqttSubscriptionComparerType.OnClientId)
                 return obj.ClientId.GetHashCode();
             else if (this.Type == MqttSubscriptionComparerType.OnTopic)
                 return obj.Topic.GetHashCode();

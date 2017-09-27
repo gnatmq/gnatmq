@@ -70,7 +70,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
         /// A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party
         /// </summary>
         public RemoteCertificateValidationCallback UserCertificateValidationCallback { get; private set; }
-        
+
         /// <summary>
         /// A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication
         /// </summary>
@@ -86,13 +86,16 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
         private Thread thread;
         private bool isRunning;
 
+        // Connection timeout for ssl authentication
+        private int connectTimeout;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="port">TCP listening port</param>
         public MqttTcpCommunicationLayer(int port)
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
-            : this(port, false, null, MqttSslProtocols.None, null, null)
+            : this(port, false, null, MqttSslProtocols.None, 0, null, null)
 #else
             : this(port, false, null, MqttSslProtocols.None)
 #endif
@@ -110,7 +113,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
         /// <param name="userCertificateSelectionCallback">A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party</param>
         /// <param name="userCertificateValidationCallback">A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication</param>
-        public MqttTcpCommunicationLayer(int port, bool secure, X509Certificate serverCert, MqttSslProtocols protocol,
+        public MqttTcpCommunicationLayer(int port, bool secure, X509Certificate serverCert, MqttSslProtocols protocol, int connectTimeout,
             RemoteCertificateValidationCallback userCertificateValidationCallback,
             LocalCertificateSelectionCallback userCertificateSelectionCallback)
 #else
@@ -124,13 +127,14 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
             this.Secure = secure;
             this.ServerCert = serverCert;
             this.Protocol = protocol;
+            this.connectTimeout = connectTimeout;
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
             this.UserCertificateValidationCallback = userCertificateValidationCallback;
             this.UserCertificateSelectionCallback = userCertificateSelectionCallback;
 #endif
         }
 
-#region IMqttCommunicationLayer ...
+        #region IMqttCommunicationLayer ...
 
         // client connected event
         public event MqttClientConnectedEventHandler ClientConnected;
@@ -161,7 +165,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
             this.thread.Join();
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Listener thread for incoming connection requests
@@ -191,7 +195,7 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
                         if (this.Secure)
                         {
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
-                            channel = new MqttNetworkChannel(socketClient, this.Secure, this.ServerCert, this.Protocol, this.UserCertificateValidationCallback, this.UserCertificateSelectionCallback);
+                            channel = new MqttNetworkChannel(socketClient, this.Secure, this.ServerCert, this.Protocol, this.connectTimeout, this.UserCertificateValidationCallback, this.UserCertificateSelectionCallback);
 #else
                             channel = new MqttNetworkChannel(socketClient, this.Secure, this.ServerCert, this.Protocol);
 #endif
