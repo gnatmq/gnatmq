@@ -4,7 +4,7 @@
 
 GnatMQ - MQTT Broker for .NET and WinRT
 
-*Project Description*
+## Project Description
 
 Project to develop a broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT platforms too (Windows 8.1, Windows Phone 8.1 and Windows 10) and .Net Compact Framework 3.9 (Windows Embedded Compact).
 
