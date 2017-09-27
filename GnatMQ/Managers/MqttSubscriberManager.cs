@@ -180,6 +180,8 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <returns>Subscription list</returns>
         public List<MqttSubscription> GetSubscriptions(string topic, byte qosLevel)
         {
+           lock (this.subscribers)
+            {
             var query = from ss in this.subscribers
                         where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
                         from s in this.subscribers[ss.Key]
@@ -191,6 +193,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             // it has more entries into subscriptions list but broker sends only one message
             this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
             return query.Distinct(comparer).ToList();
+            }
         }
 
         /// <summary>
@@ -201,6 +204,8 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <returns>Subscription list</returns>
         public MqttSubscription GetSubscription(string topic, string clientId)
         {
+           lock (this.subscribers)
+            {
             var query = from ss in this.subscribers
                         where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
                         from s in this.subscribers[ss.Key]
@@ -212,6 +217,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             // it has more entries into subscriptions list but broker sends only one message
             this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
             return query.Distinct(comparer).FirstOrDefault();
+            }
         }
 
         /// <summary>
@@ -221,6 +227,8 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <returns>Subscription list</returns>
         public List<MqttSubscription> GetSubscriptionsByTopic(string topic)
         {
+           lock (this.subscribers)
+            {
             var query = from ss in this.subscribers
                         where (new Regex(ss.Key)).IsMatch(topic)    // check for topics based also on wildcard with regex
                         from s in this.subscribers[ss.Key]
@@ -231,6 +239,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             // it has more entries into subscriptions list but broker sends only one message
             this.comparer.Type = MqttSubscriptionComparer.MqttSubscriptionComparerType.OnClientId;
             return query.Distinct(comparer).ToList();
+            }
         }
 
         /// <summary>
@@ -240,6 +249,8 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <returns>Subscription lis</returns>
         public List<MqttSubscription> GetSubscriptionsByClient(string clientId)
         {
+           lock (this.subscribers)
+            {
             var query = from ss in this.subscribers
                         from s in this.subscribers[ss.Key]
                         where s.ClientId == clientId
@@ -253,6 +264,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
 
             // I need all subscriptions, also overlapped (used to save session)
             return query.ToList();
+            }
         }
     }
 
