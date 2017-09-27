@@ -178,7 +178,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <param name="topic">Topic to get subscription list</param>
         /// <param name="qosLevel">QoS level requested</param>
         /// <returns>Subscription list</returns>
-        public List<MqttSubscription> GetSubscriptions(string topic, byte qosLevel)
+       public List<MqttSubscription> GetSubscriptions(string topic, byte qosLevel)
         {
             lock (this.subscribers)
             {
@@ -195,7 +195,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                 return query.Distinct(comparer).ToList();
             }
         }
-
+      
         /// <summary>
         /// Get a subscription for a specified topic and client
         /// </summary>
