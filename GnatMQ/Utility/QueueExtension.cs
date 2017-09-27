@@ -16,6 +16,9 @@ Contributors:
 
 using System;
 using System.Collections;
+#if NET_CORE
+using System.Collections.Generic;
+#endif
 
 namespace uPLibrary.Networking.M2Mqtt.Utility
 {
@@ -47,4 +50,11 @@ namespace uPLibrary.Networking.M2Mqtt.Utility
             return null;
         }
     }
+
+#if NET_CORE
+    internal class Queue: Queue <object>
+    {
+        
+    }
+#endif
 }
