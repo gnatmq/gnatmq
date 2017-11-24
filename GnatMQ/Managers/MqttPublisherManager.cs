@@ -225,8 +225,11 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
 
                         if (query.Count() > 0)
                         {
-                            foreach (MqttMsgPublish retained in query)
+                            // reverse loop to allow for changes in "this.retainedMessages"
+                            for (int i = query.Count() - 1; i >= 0; i--)
                             {
+                                MqttMsgPublish retained = query.ElementAt(i);
+
                                 qosLevel = (subscription.QosLevel < retained.QosLevel) ? subscription.QosLevel : retained.QosLevel;
 
                                 // send PUBLISH message to the current subscriber
