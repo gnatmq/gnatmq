@@ -189,6 +189,9 @@ namespace uPLibrary.Networking.M2Mqtt
                     }
                 }
 
+				// Waits end messages publication
+				publisherManager.PublishMessagesEventEnd.WaitOne();
+
                 // delete client from runtime subscription
                 this.subscriberManager.Unsubscribe(client);
 
