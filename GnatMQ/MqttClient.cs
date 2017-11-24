@@ -659,40 +659,43 @@ namespace uPLibrary.Networking.M2Mqtt
         private void Close()
 #endif
         {
-            // stop receiving thread
-            this.isRunning = false;
+			if (this.IsConnected)
+			{
+				// stop receiving thread
+				this.isRunning = false;
 
-            // wait end receive event thread
-            if (this.receiveEventWaitHandle != null)
-                this.receiveEventWaitHandle.Set();
+				// wait end receive event thread
+				if (this.receiveEventWaitHandle != null)
+					this.receiveEventWaitHandle.Set();
 
-            if (this.closeEventWaitHandle != null)
-                this.closeEventWaitHandle.Set();
+				if (this.closeEventWaitHandle != null)
+					this.closeEventWaitHandle.Set();
 
-            // wait end process inflight thread
-            if (this.inflightWaitHandle != null)
-                this.inflightWaitHandle.Set();
+				// wait end process inflight thread
+				if (this.inflightWaitHandle != null)
+					this.inflightWaitHandle.Set();
 
 #if BROKER
-            // unlock keep alive thread
-            this.keepAliveEvent.Set();
+				// unlock keep alive thread
+				this.keepAliveEvent.Set();
 #else
-            // unlock keep alive thread and wait
-            this.keepAliveEvent.Set();
+				// unlock keep alive thread and wait
+				this.keepAliveEvent.Set();
 
-            if (this.keepAliveEventEnd != null)
-                this.keepAliveEventEnd.WaitOne();
+				if (this.keepAliveEventEnd != null)
+					this.keepAliveEventEnd.WaitOne();
 #endif
 
-            // clear all queues
-            this.inflightQueue.Clear();
-            this.internalQueue.Clear();
-            this.eventQueue.Clear();
+				// clear all queues
+				this.inflightQueue.Clear();
+				this.internalQueue.Clear();
+				this.eventQueue.Clear();
 
-            // close network channel
-            this.channel.Close();
+				// close network channel
+				this.channel.Close();
 
-            this.IsConnected = false;
+				this.IsConnected = false;
+			}
         }
 
         /// <summary>
