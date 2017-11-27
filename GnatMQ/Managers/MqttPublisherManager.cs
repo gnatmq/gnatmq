@@ -52,6 +52,10 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         private AutoResetEvent publishEventEnd;
         // event for starting publish
         private AutoResetEvent publishQueueWaitHandle;
+		// event for waiting publishing messages end
+		private AutoResetEvent publishMessagesEventEnd;
+		public AutoResetEvent PublishMessagesEventEnd { get { return publishMessagesEventEnd; } }
+
         private bool isRunning;
 
         // reference to subscriber manager
@@ -92,6 +96,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             // create publish messages queue
             this.publishQueue = new Queue<MqttMsgBase>();
             this.publishQueueWaitHandle = new AutoResetEvent(false);
+			this.publishMessagesEventEnd = new AutoResetEvent(false);
         }
         
         /// <summary>
@@ -207,6 +212,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             {
                 // wait on message queueud to publish
                 this.publishQueueWaitHandle.WaitOne();
+				publishMessagesEventEnd.Reset();
 
                 // first check new subscribers to send retained messages ...
                 lock (this.subscribersForRetained)
@@ -330,6 +336,9 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                         }
                     }
                 }
+
+				// Report all pending messages have been published
+				publishMessagesEventEnd.Set();
             }
 
             // signal thread end
