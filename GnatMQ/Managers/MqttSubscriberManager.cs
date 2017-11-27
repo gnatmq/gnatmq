@@ -63,7 +63,8 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         public void Subscribe(string topic, byte qosLevel, MqttClient client)
         {
             string topicReplaced = topic.Replace(PLUS_WILDCARD, PLUS_WILDCARD_REPLACE).Replace(SHARP_WILDCARD, SHARP_WILDCARD_REPLACE);
-
+            topicReplaced = "^" + topicReplaced + "$";
+           
             lock (this.subscribers)
             {
                 // if the topic doesn't exist
@@ -103,7 +104,8 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         public void Unsubscribe(string topic, MqttClient client)
         {
             string topicReplaced = topic.Replace(PLUS_WILDCARD, PLUS_WILDCARD_REPLACE).Replace(SHARP_WILDCARD, SHARP_WILDCARD_REPLACE);
-
+            topicReplaced = "^" + topicReplaced + "$";
+           
             lock (this.subscribers)
             {
                 // if the topic exists
