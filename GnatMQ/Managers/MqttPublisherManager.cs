@@ -219,23 +219,24 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                         count--;
                         MqttSubscription subscription = this.subscribersForRetained.Dequeue();
 
-                        var query = from p in this.retainedMessages
-                                    where (new Regex(subscription.Topic)).IsMatch(p.Key)     // check for topics based also on wildcard with regex
-                                    select p.Value;
+						// This lock avoid modifying retainedMessages collection while publishing messages
+						lock (retainedMessages)
+						{
+							var query = from p in this.retainedMessages
+										where (new Regex(subscription.Topic)).IsMatch(p.Key)     // check for topics based also on wildcard with regex
+										select p.Value;
 
-                        if (query.Count() > 0)
-                        {
-                            // reverse loop to allow for changes in "this.retainedMessages"
-                            for (int i = query.Count() - 1; i >= 0; i--)
-                            {
-                                MqttMsgPublish retained = query.ElementAt(i);
+							if (query != null && query.Count() > 0)
+							{
+								foreach (MqttMsgPublish retained in query)
+								{
+									qosLevel = (subscription.QosLevel < retained.QosLevel) ? subscription.QosLevel : retained.QosLevel;
 
-                                qosLevel = (subscription.QosLevel < retained.QosLevel) ? subscription.QosLevel : retained.QosLevel;
-
-                                // send PUBLISH message to the current subscriber
-                                subscription.Client.Publish(retained.Topic, retained.Message, qosLevel, retained.Retain);
-                            }
-                        }
+									// send PUBLISH message to the current subscriber
+									subscription.Client.Publish(retained.Topic, retained.Message, qosLevel, retained.Retain);
+								}
+							}
+						}
                     }
                 }
 
