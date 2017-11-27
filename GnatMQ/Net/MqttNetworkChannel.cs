@@ -50,6 +50,8 @@ namespace uPLibrary.Networking.M2Mqtt
 
         // socket for communication
         private Socket socket;
+		// IP Address of the client connected to Broker
+		public IPEndPoint RemoteEndPoint;
         // using SSL
         private bool secure;
 
@@ -146,6 +148,7 @@ namespace uPLibrary.Networking.M2Mqtt
 #endif
         {
             this.socket = socket;
+			this.RemoteEndPoint = (IPEndPoint)socket.RemoteEndPoint;
             this.secure = secure;
             this.serverCert = serverCert;
             this.sslProtocol = sslProtocol;
