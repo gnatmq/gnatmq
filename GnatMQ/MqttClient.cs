@@ -175,6 +175,8 @@ namespace uPLibrary.Networking.M2Mqtt
 
         // channel to communicate over the network
         private IMqttNetworkChannel channel;
+		// IP Address of the client connected to Broker
+		public IPEndPoint RemoteEndPoint;
 
         // inflight messages queue
         private Queue inflightQueue;
@@ -386,6 +388,7 @@ namespace uPLibrary.Networking.M2Mqtt
             this.ProtocolVersion = MqttProtocolVersion.Version_3_1_1;
 
             this.channel = channel;
+			this.RemoteEndPoint = (this.channel as MqttNetworkChannel).RemoteEndPoint;
 
             // reference to MQTT settings
             this.settings = MqttSettings.Instance;

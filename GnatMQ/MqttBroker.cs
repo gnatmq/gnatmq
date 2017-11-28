@@ -69,6 +69,10 @@ namespace uPLibrary.Networking.M2Mqtt
             set { this.uacManager.UserAuth = value; }
         }
 
+		// Notifications to application, client connected / disconnected
+		public event Action<MqttClient> ClientConnected;
+		public event Action<MqttClient> ClientDisconnected;
+
         /// <summary>
         /// Constructor (TCP/IP communication layer on port 1883 and default settings)
         /// </summary>
@@ -188,6 +192,9 @@ namespace uPLibrary.Networking.M2Mqtt
                         // TODO : persist client session if broker close
                     }
                 }
+
+				// Waits end messages publication
+				publisherManager.PublishMessagesEventEnd.WaitOne();
 
                 // delete client from runtime subscription
                 this.subscriberManager.Unsubscribe(client);
@@ -378,6 +385,9 @@ namespace uPLibrary.Networking.M2Mqtt
                     // send CONNACK message to the client
                     client.Connack(e.Message, returnCode, clientId, sessionPresent);
                 }
+
+				// Notify to application, client connected
+				ClientConnected?.Invoke(client);
             }
             catch (MqttCommunicationException)
             {
@@ -391,6 +401,8 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // close the client
             this.CloseClient(client);
+			// Notify to application, client disconnected
+			ClientDisconnected?.Invoke(client);
         }
 
         void Client_ConnectionClosed(object sender, EventArgs e)
@@ -399,6 +411,8 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // close the client
             this.CloseClient(client);
+			// Notify to application, client disconnected
+			ClientDisconnected?.Invoke(client);
         }
 
         /// <summary>
