@@ -155,13 +155,10 @@ namespace uPLibrary.Networking.M2Mqtt
             this.publisherManager.Stop();
 
             // close connection with all clients
-			lock (clients)
-			{
             foreach (MqttClient client in this.clients)
             {
                 client.Close();
             }
-        }
         }
 
         /// <summary>
@@ -170,8 +167,6 @@ namespace uPLibrary.Networking.M2Mqtt
         /// <param name="client">Client to close</param>
         private void CloseClient(MqttClient client)
         {
-			lock (clients)
-			{
             if (this.clients.Contains(client))
             {
                 // if client is connected and it has a will message
@@ -211,7 +206,6 @@ namespace uPLibrary.Networking.M2Mqtt
                 this.clients.Remove(client);
             }
         }
-		}
 
         void commLayer_ClientConnected(object sender, MqttClientConnectedEventArgs e)
         {
@@ -223,11 +217,8 @@ namespace uPLibrary.Networking.M2Mqtt
             e.Client.MqttMsgUnsubscribeReceived += Client_MqttMsgUnsubscribeReceived;
             e.Client.ConnectionClosed += Client_ConnectionClosed;
 
-			lock (clients)
-			{
             // add client to the collection
             this.clients.Add(e.Client);
-			}
 
             // start client threads
             e.Client.Open();
@@ -472,8 +463,6 @@ namespace uPLibrary.Networking.M2Mqtt
         /// <returns>Reference to client</returns>
         private MqttClient GetClient(string clientId)
         {
-			lock (this.clients)
-			{
             var query = from c in this.clients
                         where c.ClientId == clientId
                         select c;
@@ -481,5 +470,4 @@ namespace uPLibrary.Networking.M2Mqtt
             return query.FirstOrDefault();
         }
     }
-}
 }
