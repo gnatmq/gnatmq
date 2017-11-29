@@ -173,7 +173,13 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
         private void ListenerThread()
         {
             // create listener...
+#if COMPACT_FRAMEWORK
+			// With IPAddress.IPv6Any it doesn't works correctly on WinCE
+			this.listener = new TcpListener(IPAddress.Any, this.Port);
+#else
             this.listener = new TcpListener(IPAddress.IPv6Any, this.Port);
+#endif
+
             // set socket option 27 (IPV6_V6ONLY) to false to accept also connection on IPV4 (not only IPV6 as default)
             this.listener.Server.SetSocketOption(SocketOptionLevel.IPv6, (SocketOptionName)IPV6_V6ONLY, false);
             // ...and start it
