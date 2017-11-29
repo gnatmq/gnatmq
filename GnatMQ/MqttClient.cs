@@ -1859,15 +1859,18 @@ namespace uPLibrary.Networking.M2Mqtt
                         }
                     }
 
-                    // all events for received messages dispatched, check if there is closing connection
-                    if ((this.eventQueue.Count == 0) && this.isConnectionClosing)
-                    {
-                        // client must close connection
-                        this.Close();
+					// all events for received messages dispatched, check if there is closing connection
+					if (this.isRunning)
+					{
+						if ((this.eventQueue.Count == 0) && this.isConnectionClosing)
+						{
+							// client must close connection
+							this.Close();
 
-                        // client raw disconnection
-                        this.OnConnectionClosed();
-                    }
+							// client raw disconnection
+							this.OnConnectionClosed();
+						}
+					}
                 }
             }
         }
