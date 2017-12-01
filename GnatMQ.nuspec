@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>GnatMQ</id>
-        <version>1.1.0.0</version>
+        <id>GnatMQ_Broker</id>
+        <version>1.2.0.0</version>
         <title>GnatMQ - MQTT Broker for .NET and WinRT</title>
-        <authors>Paolo Patierno</authors>
+        <authors>Paolo Patierno and the GnatMQ Community</authors>
         <owners>Paolo Patierno</owners>
         <licenseUrl>https://github.com/ppatierno/gnatmq/blob/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/ppatierno/gnatmq</projectUrl>
+        <projectUrl>https://github.com/gnatmq/gnatmq</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/ppatierno/gnatmq/master/images/gnat.jpg</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT platforms too (Windows 8.1 and Windows Phone 8.1).</description>
+        <description>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT platforms too (Windows 8.1 and Windows Phone 8.1). Development happens on github https://github.com/gnatmq/gnatmq</description>
         <summary>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT platforms too (Windows 8.1 and Windows Phone 8.1</summary>
-        <releaseNotes>First release</releaseNotes>
-        <copyright>Paolo Patierno Copyright 2015</copyright>
+        <releaseNotes>Corrected numerous race conditions</releaseNotes>
+        <copyright>Paolo Patierno Copyright 2017</copyright>
         <tags>m2m mqtt queue messaging internetofthings iot cloud winrt windows8 windows8.1 windowsphone windowsphone8.1 broker</tags>
     </metadata>
     <files>
