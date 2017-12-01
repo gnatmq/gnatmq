@@ -212,7 +212,7 @@ namespace uPLibrary.Networking.M2Mqtt
 				}
 			}
 		}
-
+    
         void commLayer_ClientConnected(object sender, MqttClientConnectedEventArgs e)
         {
             // register event handlers from client
