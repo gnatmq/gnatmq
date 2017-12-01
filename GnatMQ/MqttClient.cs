@@ -1638,10 +1638,12 @@ namespace uPLibrary.Networking.M2Mqtt
 #if !(WINDOWS_APP || WINDOWS_PHONE_APP)
                     else if ((e.GetType() == typeof(IOException)) || (e.GetType() == typeof(SocketException)) ||
                              ((e.InnerException != null) && (e.InnerException.GetType() == typeof(SocketException)))) // added for SSL/TLS incoming connection that use SslStream that wraps SocketException
+#else
+					else if (e.GetType() == typeof(System.AggregateException))
+#endif
                     {
                         close = true;
                     }
-#endif
 
                     if (close)
                     {
@@ -1859,15 +1861,18 @@ namespace uPLibrary.Networking.M2Mqtt
                         }
                     }
 
-                    // all events for received messages dispatched, check if there is closing connection
-                    if ((this.eventQueue.Count == 0) && this.isConnectionClosing)
-                    {
-                        // client must close connection
-                        this.Close();
+					// all events for received messages dispatched, check if there is closing connection
+					if (this.isRunning)
+					{
+						if ((this.eventQueue.Count == 0) && this.isConnectionClosing)
+						{
+							// client must close connection
+							this.Close();
 
-                        // client raw disconnection
-                        this.OnConnectionClosed();
-                    }
+							// client raw disconnection
+							this.OnConnectionClosed();
+						}
+					}
                 }
             }
         }
