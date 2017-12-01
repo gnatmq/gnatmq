@@ -175,9 +175,11 @@ namespace uPLibrary.Networking.M2Mqtt
 
         // channel to communicate over the network
         private IMqttNetworkChannel channel;
-		// IP Address of the client connected to Broker
-		public IPEndPoint RemoteEndPoint;
 
+#if !(WINDOWS_APP || WINDOWS_PHONE_APP)
+        // IP Address of the client connected to Broker
+        public IPEndPoint RemoteEndPoint;
+#endif
         // inflight messages queue
         private Queue inflightQueue;
         // internal queue for received messages about inflight messages
@@ -388,7 +390,9 @@ namespace uPLibrary.Networking.M2Mqtt
             this.ProtocolVersion = MqttProtocolVersion.Version_3_1_1;
 
             this.channel = channel;
+#if !(WINDOWS_APP || WINDOWS_PHONE_APP)
 			this.RemoteEndPoint = (this.channel as MqttNetworkChannel).RemoteEndPoint;
+#endif
 
             // reference to MQTT settings
             this.settings = MqttSettings.Instance;
@@ -415,15 +419,15 @@ namespace uPLibrary.Networking.M2Mqtt
         }
 #endif
 
-        /// <summary>
-        /// MqttClient initialization
-        /// </summary>
-        /// <param name="brokerHostName">Broker Host Name or IP Address</param>
-        /// <param name="brokerPort">Broker port</param>
-        /// <param name="secure">>Using secure connection</param>
-        /// <param name="caCert">CA certificate for secure connection</param>
-        /// <param name="clientCert">Client certificate</param>
-        /// <param name="sslProtocol">SSL/TLS protocol version</param>
+            /// <summary>
+            /// MqttClient initialization
+            /// </summary>
+            /// <param name="brokerHostName">Broker Host Name or IP Address</param>
+            /// <param name="brokerPort">Broker port</param>
+            /// <param name="secure">>Using secure connection</param>
+            /// <param name="caCert">CA certificate for secure connection</param>
+            /// <param name="clientCert">Client certificate</param>
+            /// <param name="sslProtocol">SSL/TLS protocol version</param>
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || WINDOWS_APP || WINDOWS_PHONE_APP)
         /// <param name="userCertificateSelectionCallback">A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party</param>
         /// <param name="userCertificateValidationCallback">A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication</param>
