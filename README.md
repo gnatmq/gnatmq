@@ -16,9 +16,28 @@ In general, the MQTT environment consists of multiple clients and a server, call
 
 This project is created to develop an MQTT broker.  While there are other MQTT broker project, this project is created to provide additional resources to learn and engage in developing useful resources for the MQTT protocol, in conjunction with the M2Mqtt project, a .NET client library for MQTT that supports .NET Framework, .NET Compact Framework and .NET Micro Framework.
 
-## Get it on NuGet
-` Install-Package GnatMQ -Version 1.1.0 `
-Note that [Current NuGet](https://www.nuget.org/packages/GnatMQ/#) is out of date, we are working on 
+## How to use:
+```
+Install-Package GnatMQ_Broker -Version 1.2.0
+```
+Starting the server is simple:
+```C#
+using uPLibrary.Networking.M2Mqtt;
+
+static void Main(string[] args)
+{
+    // create and start broker
+    MqttBroker broker = new MqttBroker();
+    broker.Start();
+	//Once the broker is started, you applciaiton is free to do whatever it wants. 
+    Console.ReadLine();
+	
+	///Stop broker
+    broker.Stop();
+}
+```
+The broker can also be embedded in an applicaiton, 
+be that a cloud server, desktop app or even a UWP applicaiton. 
 
 ## Supported Platforms: 
 * .Net Framework (up to 4.5)
@@ -27,16 +46,8 @@ Note that [Current NuGet](https://www.nuget.org/packages/GnatMQ/#) is out of dat
 * Mono (for Linux O.S.)
 * Windows 8.1
 * Windows Phone 8.1
-* Windows 10
-
-## More Information
-The project has an official website here :  https://m2mqtt.wordpress.com/
-
-For more information about MQTT, visit: http://www.mqtt.org
-
-For more information about OASIS, visit: https://www.oasis-open.org
-
-There is an MQTT client, M2Mqtt released as community resource on this GitHub repo : https://github.com/ppatierno/m2mqtt
+* Windows 10 (Through .Net Standard 2)
+* .Net Core (Through .Net Standard 2)
 
 ## Features
 
@@ -58,6 +69,14 @@ There is an MQTT client, M2Mqtt released as community resource on this GitHub re
 * Sessions, retained and will messages persisted at broker shutdown (ex. database); 
 
 ## Contributing 
-Contributions are welcome. Please create a fork and submit a PR against the Dev branch. 
-Because the software supprots so many platforms, testing it is a little involved process, 
-you can get Applicaiton Builded for [Compact Framework Here](https://www.microsoft.com/en-us/download/details.aspx?id=38819) 
+Contributions are welcome. Please submit a PR against the Dev branch. 
+Because the software supprots so many platforms, testing it is a little involved. 
+Because GnatMQ supports .Net Compact Framework 3.9, building nuget packages requires VS2015 Pro or Enterprise and  
+Applicaiton Builder for [Compact Framework, download here](https://www.microsoft.com/en-us/download/details.aspx?id=38819). 
+
+
+## More Information
+* The project has an official website here :  https://m2mqtt.wordpress.com/
+* or more information about MQTT, visit: http://www.mqtt.org
+* For more information about OASIS, visit: https://www.oasis-open.org
+* There is an MQTT client, M2Mqtt released as community resource on this GitHub repo : https://github.com/ppatierno/m2mqtt
