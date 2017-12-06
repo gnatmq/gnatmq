@@ -2,24 +2,37 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>GnatMQ_Broker</id>
-        <version>1.2.0.0</version>
-        <title>GnatMQ - MQTT Broker for .NET and WinRT</title>
+        <version>1.3.0.1-beta</version>
+        <title>GnatMQ - MQTT Broker for .NET</title>
         <authors>Paolo Patierno and the GnatMQ Community</authors>
         <owners>Paolo Patierno</owners>
         <licenseUrl>https://github.com/ppatierno/gnatmq/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/gnatmq/gnatmq</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/ppatierno/gnatmq/master/images/gnat.jpg</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT platforms too (Windows 8.1 and Windows Phone 8.1). Development happens on github https://github.com/gnatmq/gnatmq</description>
-        <summary>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT platforms too (Windows 8.1 and Windows Phone 8.1</summary>
-        <releaseNotes>Corrected numerous race conditions</releaseNotes>
+        <description>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework.  Development happens on github https://github.com/gnatmq/gnatmq 
+		This is a successor to the package https://www.nuget.org/packages/GnatMQ/, and will be maintained from now onwards. 
+		
+		Supported Platforms: 
+		* .Net Framework (up to 4.5) 
+		* .Net Compact Framework 3.5 and 3.9 (for Windows Embedded Compact 7 / 2013) 
+		* .Net Micro Framework 4.2 and 4.3 
+		* Mono (for Linux O.S.) 
+		* Windows 8.1 
+		* Windows Phone 8.1 
+		* Windows 10 (through .Net Standard 2.0) 
+		* .Net Core (through .Net Standard 2.0)
+		</description>
+        <summary>Broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. It works on WinRT, UWP, .Net Core</summary>
+        <releaseNotes>Added .Net Standard 2.0 and API for integrating the broker in a custom manner in your application</releaseNotes>
         <copyright>Paolo Patierno Copyright 2017</copyright>
-        <tags>m2m mqtt queue messaging internetofthings iot cloud winrt windows8 windows8.1 windowsphone windowsphone8.1 broker</tags>
+        <tags>m2m mqtt queue messaging internetofthings iot cloud winrt windows8 windows8.1 windowsphone windowsphone8.1 broker NetStandard2</tags>
     </metadata>
     <files>
         <file src="bin\Release\GnatMQ.Net\*.*" target="lib\net45" />
         <file src="bin\Release\GnatMQ.WinRT\*.*" target="lib\win81" />
         <file src="bin\Release\GnatMQ.WinRT\*.*" target="lib\wpa81" />
 		<file src="bin\Release\GnatMQ.NetCf39\*.*" target="lib\netcf39" />
+		<file src="bin\Release\GnatMQ.Standard\netstandard2.0\*.*" target="lib\netstandard2.0"/>
     </files>
 </package>

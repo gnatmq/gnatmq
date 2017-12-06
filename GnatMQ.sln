@@ -25,8 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnatMQServerWinRT.WindowsPh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GnatMQ.Standard", "GnatMQ\GnatMQ.Standard.csproj", "{3D682361-B714-49DF-9BA4-48057C1F8A52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnatMQServerUWP", "Examples\GnatMQServerUWP\GnatMQServerUWP.csproj", "{781540D7-88E0-48A5-B184-0E7D3FAF5982}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Examples\GnatMQServerWinRT\GnatMQServerWinRT.Shared\GnatMQServerWinRT.Shared.projitems*{54cc644e-9557-4d11-9630-eb20406e9b1e}*SharedItemsImports = 13
 		Examples\GnatMQServerWinRT\GnatMQServerWinRT.Shared\GnatMQServerWinRT.Shared.projitems*{b0ab9f41-08ad-4f25-8507-a2af603e69fe}*SharedItemsImports = 4
 		Examples\GnatMQServerWinRT\GnatMQServerWinRT.Shared\GnatMQServerWinRT.Shared.projitems*{bef58b3a-fed0-44ac-94ef-afa622f8bcf3}*SharedItemsImports = 4
 	EndGlobalSection
@@ -177,6 +180,28 @@ Global
 		{3D682361-B714-49DF-9BA4-48057C1F8A52}.Release|x64.Build.0 = Release|Any CPU
 		{3D682361-B714-49DF-9BA4-48057C1F8A52}.Release|x86.ActiveCfg = Release|Any CPU
 		{3D682361-B714-49DF-9BA4-48057C1F8A52}.Release|x86.Build.0 = Release|Any CPU
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|Any CPU.Build.0 = Debug|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|Any CPU.Deploy.0 = Debug|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|ARM.ActiveCfg = Debug|ARM
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|ARM.Build.0 = Debug|ARM
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|ARM.Deploy.0 = Debug|ARM
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|x64.ActiveCfg = Debug|x64
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|x64.Build.0 = Debug|x64
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|x64.Deploy.0 = Debug|x64
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|x86.ActiveCfg = Debug|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|x86.Build.0 = Debug|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Debug|x86.Deploy.0 = Debug|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|Any CPU.ActiveCfg = Release|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|ARM.ActiveCfg = Release|ARM
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|ARM.Build.0 = Release|ARM
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|ARM.Deploy.0 = Release|ARM
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|x64.ActiveCfg = Release|x64
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|x64.Build.0 = Release|x64
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|x64.Deploy.0 = Release|x64
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|x86.ActiveCfg = Release|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|x86.Build.0 = Release|x86
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +213,7 @@ Global
 		{54CC644E-9557-4D11-9630-EB20406E9B1E} = {5FC5CA7C-E9E5-4745-9468-C0F8C008C7EB}
 		{BEF58B3A-FED0-44AC-94EF-AFA622F8BCF3} = {5FC5CA7C-E9E5-4745-9468-C0F8C008C7EB}
 		{B0AB9F41-08AD-4F25-8507-A2AF603E69FE} = {5FC5CA7C-E9E5-4745-9468-C0F8C008C7EB}
+		{781540D7-88E0-48A5-B184-0E7D3FAF5982} = {FF6870AA-905C-4B03-A747-CB5D91B4059B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8F0E4FC9-970E-464E-8A1B-1C7DD13D6312}

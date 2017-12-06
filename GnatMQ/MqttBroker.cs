@@ -285,7 +285,7 @@ namespace uPLibrary.Networking.M2Mqtt
             //          It should be set in the outgoing PUBLISH message based on transmission for each subscriber
             MqttMsgPublish publish = new MqttMsgPublish(e.Topic, e.Message, false, e.QosLevel, e.Retain);
 
-            MsgPublishReceived.Invoke(new KeyValuePair<string, MqttMsgPublish>(client.ClientId, publish));
+            MsgPublishReceived?.Invoke(new KeyValuePair<string, MqttMsgPublish>(client.ClientId, publish));
             
 
             // publish message through publisher manager
