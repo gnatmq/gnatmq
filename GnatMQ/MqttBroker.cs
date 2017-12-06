@@ -23,6 +23,8 @@ using uPLibrary.Networking.M2Mqtt.Exceptions;
 using uPLibrary.Networking.M2Mqtt.Managers;
 using uPLibrary.Networking.M2Mqtt.Communication;
 using uPLibrary.Networking.M2Mqtt.Session;
+using uPLibrary.Networking.M2Mqtt.IntegrationAPI;
+
 #if SSL
 #if !(WINDOWS_APP || WINDOWS_PHONE_APP)
 using System.Security.Cryptography.X509Certificates;
@@ -60,6 +62,15 @@ namespace uPLibrary.Networking.M2Mqtt
         // MQTT communication layer
         private IMqttCommunicationLayer commLayer;
 
+
+        public event Action<ClientModel> ClientConnected;
+        public event Action<ClientModel> ClientDisconnected;
+        /// <summary>
+        /// Notifies a client has connected. The MqttMsgPublish object will be used for publishing after the event was prossesed. 
+        /// You can alter the message to achieve some very unconventional behaviour! This may break the MQTT standard
+        /// </summary>
+        public event Action<KeyValuePair<string, MqttMsgPublish>> MsgPublishReceived;
+
         /// <summary>
         /// User authentication method
         /// </summary>
@@ -69,9 +80,25 @@ namespace uPLibrary.Networking.M2Mqtt
             set { this.uacManager.UserAuth = value; }
         }
 
-		// Notifications to application, client connected / disconnected
-		public event Action<MqttClient> ClientConnected;
-		public event Action<MqttClient> ClientDisconnected;
+        /// <summary>
+        /// Returns a list of MQTT clients.
+        /// </summary>
+        public List<ClientModel> GetClientList {
+            get
+            {
+                List<ClientModel> clientList;
+                lock (clients)
+                {
+                    clientList = new List<ClientModel>(clients.Count);
+                    foreach (MqttClient client in clients)
+                    {
+                        clientList.Add(new ClientModel(client)); 
+                    }
+                }
+                return clientList; 
+            }
+        }
+
 
         /// <summary>
         /// Constructor (TCP/IP communication layer on port 1883 and default settings)
@@ -165,6 +192,22 @@ namespace uPLibrary.Networking.M2Mqtt
         }
 
         /// <summary>
+        /// Publishes the message to a given topic. We reccomend adopting a topic for Broke-to-client communication, 
+        /// for example Mosquitto does that on the topic $SYS/, but that's just a convention
+        /// </summary>
+        /// <param name="topic">Message topic</param>
+        /// <param name="message">Message data</param>
+        /// <param name="dupFlag">Duplicate flag</param>
+        /// <param name="qosLevel">Quality of Service level</param>
+        /// <param name="retain">Retain flag</param>
+        public void PublishMessage(string topic, byte[] message, bool dupFlag = false, byte qosLevel = 0, bool retain = false)
+        {
+            MqttMsgPublish publish = new MqttMsgPublish(topic, message, dupFlag, qosLevel, retain);
+            publisherManager.Publish(publish);
+        }
+        
+
+        /// <summary>
         /// Close a client
         /// </summary>
         /// <param name="client">Client to close</param>
@@ -241,6 +284,9 @@ namespace uPLibrary.Networking.M2Mqtt
             // [v3.1.1] DUP flag from an incoming PUBLISH message is not propagated to subscribers
             //          It should be set in the outgoing PUBLISH message based on transmission for each subscriber
             MqttMsgPublish publish = new MqttMsgPublish(e.Topic, e.Message, false, e.QosLevel, e.Retain);
+
+            MsgPublishReceived.Invoke(new KeyValuePair<string, MqttMsgPublish>(client.ClientId, publish));
+            
 
             // publish message through publisher manager
             this.publisherManager.Publish(publish);
@@ -396,7 +442,7 @@ namespace uPLibrary.Networking.M2Mqtt
                 }
 
 				// Notify to application, client connected
-				ClientConnected?.Invoke(client);
+				ClientConnected?.Invoke(new ClientModel(client));
             }
             catch (MqttCommunicationException)
             {
@@ -411,7 +457,7 @@ namespace uPLibrary.Networking.M2Mqtt
             // close the client
             this.CloseClient(client);
 			// Notify to application, client disconnected
-			ClientDisconnected?.Invoke(client);
+			ClientDisconnected?.Invoke(new ClientModel(client));
         }
 
         void Client_ConnectionClosed(object sender, EventArgs e)
@@ -421,7 +467,7 @@ namespace uPLibrary.Networking.M2Mqtt
             // close the client
             this.CloseClient(client);
 			// Notify to application, client disconnected
-			ClientDisconnected?.Invoke(client);
+			ClientDisconnected?.Invoke(new ClientModel(client));
         }
 
         /// <summary>

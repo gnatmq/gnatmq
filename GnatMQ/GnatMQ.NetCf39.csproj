@@ -47,6 +47,7 @@
     <Compile Include="Exceptions\MqttTimeoutException.cs" />
     <Compile Include="Communication\IMqttCommunicationLayer.cs" />
     <Compile Include="IMqttNetworkChannel.cs" />
+    <Compile Include="IntegrationAPI\ClientModel.cs" />
     <Compile Include="Internal\InternalEvent.cs" />
     <Compile Include="Internal\MsgInternalEvent.cs" />
     <Compile Include="Internal\MsgPublishedInternalEvent.cs" />
@@ -76,7 +77,7 @@
     <Compile Include="MqttClientCollection.cs" />
     <Compile Include="Communication\MqttClientConnectedEventArgs.cs" />
     <Compile Include="MqttClient.cs" />
-	<Compile Include="MqttSecurity.cs" />
+    <Compile Include="MqttSecurity.cs" />
     <Compile Include="Net\MqttTcpCommunicationLayer.cs" />
     <Compile Include="MqttBroker.cs" />
     <Compile Include="Managers\MqttPublisherManager.cs" />
