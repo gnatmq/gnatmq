@@ -81,7 +81,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\..\GnatMQ\GnatMQ.WinRT.csproj">
+    <ProjectReference Include="..\..\..\GnatMQ\GnatMQ.WinRT.csproj">
       <Project>{780cc311-c604-4784-aa0c-efbb9da10cfb}</Project>
       <Name>GnatMQ.WinRT</Name>
     </ProjectReference>
