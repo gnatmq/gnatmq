@@ -40,3 +40,5 @@ Features not included in the current release :
 * Broker configuration using a simple config file;
 * Bridge configuration (broker to broker);
 * Sessions, retained and will messages persisted at broker shutdown (ex. database); 
+
+# Projects using GnatMQ
