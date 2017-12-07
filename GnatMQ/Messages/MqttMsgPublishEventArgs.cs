@@ -85,7 +85,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         // quality of service level
         private byte qosLevel;
         // retain flag
-        private bool retain;       
+        private bool retain;
 
         /// <summary>
         /// Constructor

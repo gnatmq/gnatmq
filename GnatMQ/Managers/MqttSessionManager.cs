@@ -76,7 +76,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             {
                 session.Subscriptions.Add(new MqttSubscription(subscription.ClientId, subscription.Topic, subscription.QosLevel, null));
             }
-            
+
             // update inflight messages
             session.InflightMessages = new Hashtable();
             foreach (MqttMsgContext msgContext in clientSession.InflightMessages.Values)

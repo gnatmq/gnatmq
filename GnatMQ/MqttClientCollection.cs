@@ -34,7 +34,7 @@ namespace uPLibrary.Networking.M2Mqtt
         {
             this.clients = new List<MqttClient>();
         }
-                
+
         #region IEnumerable ...
 
         public IEnumerator GetEnumerator()

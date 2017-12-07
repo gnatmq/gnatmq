@@ -69,9 +69,9 @@ namespace uPLibrary.Networking.M2Mqtt
             set { this.uacManager.UserAuth = value; }
         }
 
-		// Notifications to application, client connected / disconnected
-		public event Action<MqttClient> ClientConnected;
-		public event Action<MqttClient> ClientDisconnected;
+        // Notifications to application, client connected / disconnected
+        public event Action<MqttClient> ClientConnected;
+        public event Action<MqttClient> ClientDisconnected;
 
         /// <summary>
         /// Constructor (TCP/IP communication layer on port 1883 and default settings)
@@ -155,13 +155,13 @@ namespace uPLibrary.Networking.M2Mqtt
             this.publisherManager.Stop();
 
             // close connection with all clients
-			lock (clients)
-			{
-				foreach (MqttClient client in this.clients)
-				{
-					client.Close();
-				}
-			}
+            lock (clients)
+            {
+                foreach (MqttClient client in this.clients)
+                {
+                    client.Close();
+                }
+            }
         }
 
         /// <summary>
@@ -170,49 +170,49 @@ namespace uPLibrary.Networking.M2Mqtt
         /// <param name="client">Client to close</param>
         private void CloseClient(MqttClient client)
         {
-			lock (clients)
-			{
-				if (this.clients.Contains(client))
-				{
-					// if client is connected and it has a will message
-					if (!client.IsConnected && client.WillFlag)
-					{
-						// create the will PUBLISH message
-						MqttMsgPublish publish =
-							new MqttMsgPublish(client.WillTopic, Encoding.UTF8.GetBytes(client.WillMessage), false, client.WillQosLevel, false);
+            lock (clients)
+            {
+                if (this.clients.Contains(client))
+                {
+                    // if client is connected and it has a will message
+                    if (!client.IsConnected && client.WillFlag)
+                    {
+                        // create the will PUBLISH message
+                        MqttMsgPublish publish =
+                            new MqttMsgPublish(client.WillTopic, Encoding.UTF8.GetBytes(client.WillMessage), false, client.WillQosLevel, false);
 
-						// publish message through publisher manager
-						this.publisherManager.Publish(publish);
-					}
+                        // publish message through publisher manager
+                        this.publisherManager.Publish(publish);
+                    }
 
-					// if not clean session
-					if (!client.CleanSession)
-					{
-						List<MqttSubscription> subscriptions = this.subscriberManager.GetSubscriptionsByClient(client.ClientId);
+                    // if not clean session
+                    if (!client.CleanSession)
+                    {
+                        List<MqttSubscription> subscriptions = this.subscriberManager.GetSubscriptionsByClient(client.ClientId);
 
-						if ((subscriptions != null) && (subscriptions.Count > 0))
-						{
-							this.sessionManager.SaveSession(client.ClientId, client.Session, subscriptions);
+                        if ((subscriptions != null) && (subscriptions.Count > 0))
+                        {
+                            this.sessionManager.SaveSession(client.ClientId, client.Session, subscriptions);
 
-							// TODO : persist client session if broker close
-						}
-					}
+                            // TODO : persist client session if broker close
+                        }
+                    }
 
-					// Waits end messages publication
-					publisherManager.PublishMessagesEventEnd.WaitOne();
+                    // Waits end messages publication
+                    publisherManager.PublishMessagesEventEnd.WaitOne();
 
-					// delete client from runtime subscription
-					this.subscriberManager.Unsubscribe(client);
+                    // delete client from runtime subscription
+                    this.subscriberManager.Unsubscribe(client);
 
-					// close the client
-					client.Close();
+                    // close the client
+                    client.Close();
 
-					// remove client from the collection
-					this.clients.Remove(client);
-				}
-			}
-		}
-    
+                    // remove client from the collection
+                    this.clients.Remove(client);
+                }
+            }
+        }
+
         void commLayer_ClientConnected(object sender, MqttClientConnectedEventArgs e)
         {
             // register event handlers from client
@@ -223,11 +223,11 @@ namespace uPLibrary.Networking.M2Mqtt
             e.Client.MqttMsgUnsubscribeReceived += Client_MqttMsgUnsubscribeReceived;
             e.Client.ConnectionClosed += Client_ConnectionClosed;
 
-			lock (clients)
-			{
-				// add client to the collection
-				this.clients.Add(e.Client);
-			}
+            lock (clients)
+            {
+                // add client to the collection
+                this.clients.Add(e.Client);
+            }
 
             // start client threads
             e.Client.Open();
@@ -395,8 +395,8 @@ namespace uPLibrary.Networking.M2Mqtt
                     client.Connack(e.Message, returnCode, clientId, sessionPresent);
                 }
 
-				// Notify to application, client connected
-				ClientConnected?.Invoke(client);
+                // Notify to application, client connected
+                ClientConnected?.Invoke(client);
             }
             catch (MqttCommunicationException)
             {
@@ -410,8 +410,8 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // close the client
             this.CloseClient(client);
-			// Notify to application, client disconnected
-			ClientDisconnected?.Invoke(client);
+            // Notify to application, client disconnected
+            ClientDisconnected?.Invoke(client);
         }
 
         void Client_ConnectionClosed(object sender, EventArgs e)
@@ -420,8 +420,8 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // close the client
             this.CloseClient(client);
-			// Notify to application, client disconnected
-			ClientDisconnected?.Invoke(client);
+            // Notify to application, client disconnected
+            ClientDisconnected?.Invoke(client);
         }
 
         /// <summary>
@@ -472,14 +472,14 @@ namespace uPLibrary.Networking.M2Mqtt
         /// <returns>Reference to client</returns>
         private MqttClient GetClient(string clientId)
         {
-			lock (this.clients)
-			{
-				var query = from c in this.clients
-							where c.ClientId == clientId
-							select c;
+            lock (this.clients)
+            {
+                var query = from c in this.clients
+                            where c.ClientId == clientId
+                            select c;
 
-				return query.FirstOrDefault();
-			}
-		}
-	}
+                return query.FirstOrDefault();
+            }
+        }
+    }
 }

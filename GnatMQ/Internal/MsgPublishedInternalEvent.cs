@@ -44,7 +44,7 @@ namespace uPLibrary.Networking.M2Mqtt.Internal
         /// </summary>
         /// <param name="msg">Message published</param>
         /// <param name="isPublished">Publish flag</param>
-        public MsgPublishedInternalEvent(MqttMsgBase msg, bool isPublished) 
+        public MsgPublishedInternalEvent(MqttMsgBase msg, bool isPublished)
             : base(msg)
         {
             this.isPublished = isPublished;

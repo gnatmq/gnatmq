@@ -52,9 +52,9 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         private AutoResetEvent publishEventEnd;
         // event for starting publish
         private AutoResetEvent publishQueueWaitHandle;
-		// event for waiting publishing messages end
-		private AutoResetEvent publishMessagesEventEnd;
-		public AutoResetEvent PublishMessagesEventEnd { get { return publishMessagesEventEnd; } }
+        // event for waiting publishing messages end
+        private AutoResetEvent publishMessagesEventEnd;
+        public AutoResetEvent PublishMessagesEventEnd { get { return publishMessagesEventEnd; } }
 
         private bool isRunning;
 
@@ -96,9 +96,9 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             // create publish messages queue
             this.publishQueue = new Queue<MqttMsgBase>();
             this.publishQueueWaitHandle = new AutoResetEvent(false);
-			this.publishMessagesEventEnd = new AutoResetEvent(false);
+            this.publishMessagesEventEnd = new AutoResetEvent(false);
         }
-        
+
         /// <summary>
         /// Start publish handling
         /// </summary>
@@ -212,7 +212,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
             {
                 // wait on message queueud to publish
                 this.publishQueueWaitHandle.WaitOne();
-				publishMessagesEventEnd.Reset();
+                publishMessagesEventEnd.Reset();
 
                 // first check new subscribers to send retained messages ...
                 lock (this.subscribersForRetained)
@@ -225,24 +225,24 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                         count--;
                         MqttSubscription subscription = this.subscribersForRetained.Dequeue();
 
-						// This lock avoid modifying retainedMessages collection while publishing messages
-						lock (retainedMessages)
-						{
-							var query = from p in this.retainedMessages
-										where (new Regex(subscription.Topic)).IsMatch(p.Key)     // check for topics based also on wildcard with regex
-										select p.Value;
+                        // This lock avoid modifying retainedMessages collection while publishing messages
+                        lock (retainedMessages)
+                        {
+                            var query = from p in this.retainedMessages
+                                        where (new Regex(subscription.Topic)).IsMatch(p.Key)     // check for topics based also on wildcard with regex
+                                        select p.Value;
 
-							if (query != null && query.Count() > 0)
-							{
-								foreach (MqttMsgPublish retained in query)
-								{
-									qosLevel = (subscription.QosLevel < retained.QosLevel) ? subscription.QosLevel : retained.QosLevel;
+                            if (query != null && query.Count() > 0)
+                            {
+                                foreach (MqttMsgPublish retained in query)
+                                {
+                                    qosLevel = (subscription.QosLevel < retained.QosLevel) ? subscription.QosLevel : retained.QosLevel;
 
-									// send PUBLISH message to the current subscriber
-									subscription.Client.Publish(retained.Topic, retained.Message, qosLevel, retained.Retain);
-								}
-							}
-						}
+                                    // send PUBLISH message to the current subscriber
+                                    subscription.Client.Publish(retained.Topic, retained.Message, qosLevel, retained.Retain);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -262,10 +262,10 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                         while (session.OutgoingMessages.Count > 0)
                         {
                             MqttMsgPublish outgoingMsg = session.OutgoingMessages.Dequeue();
-                            
+
                             var query = from s in session.Subscriptions
-                                where (new Regex(s.Topic)).IsMatch(outgoingMsg.Topic)     // check for topics based also on wildcard with regex
-                                select s;
+                                        where (new Regex(s.Topic)).IsMatch(outgoingMsg.Topic)     // check for topics based also on wildcard with regex
+                                        select s;
 
                             MqttSubscription subscription = query.First();
 
@@ -278,7 +278,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                         }
                     }
                 }
-                
+
                 // ... then pass to process publish queue
                 lock (this.publishQueue)
                 {
@@ -337,8 +337,8 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                     }
                 }
 
-				// Report all pending messages have been published
-				publishMessagesEventEnd.Set();
+                // Report all pending messages have been published
+                publishMessagesEventEnd.Set();
             }
 
             // signal thread end

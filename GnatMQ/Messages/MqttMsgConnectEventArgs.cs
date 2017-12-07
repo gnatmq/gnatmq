@@ -41,4 +41,4 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             this.Message = connect;
         }
     }
-} 
+}

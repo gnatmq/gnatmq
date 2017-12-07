@@ -64,7 +64,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         {
             string topicReplaced = topic.Replace(PLUS_WILDCARD, PLUS_WILDCARD_REPLACE).Replace(SHARP_WILDCARD, SHARP_WILDCARD_REPLACE);
             topicReplaced = "^" + topicReplaced + "$";
-           
+
             lock (this.subscribers)
             {
                 // if the topic doesn't exist
@@ -105,7 +105,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         {
             string topicReplaced = topic.Replace(PLUS_WILDCARD, PLUS_WILDCARD_REPLACE).Replace(SHARP_WILDCARD, SHARP_WILDCARD_REPLACE);
             topicReplaced = "^" + topicReplaced + "$";
-           
+
             lock (this.subscribers)
             {
                 // if the topic exists
@@ -120,7 +120,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                     if (query.Count() > 0)
                     {
                         MqttSubscription subscription = query.First();
-                        
+
                         // remove subscription from the list for the topic
                         this.subscribers[topicReplaced].Remove(subscription);
                         // dispose subscription
@@ -180,7 +180,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
         /// <param name="topic">Topic to get subscription list</param>
         /// <param name="qosLevel">QoS level requested</param>
         /// <returns>Subscription list</returns>
-       public List<MqttSubscription> GetSubscriptions(string topic, byte qosLevel)
+        public List<MqttSubscription> GetSubscriptions(string topic, byte qosLevel)
         {
             lock (this.subscribers)
             {
@@ -197,7 +197,7 @@ namespace uPLibrary.Networking.M2Mqtt.Managers
                 return query.Distinct(comparer).ToList();
             }
         }
-      
+
         /// <summary>
         /// Get a subscription for a specified topic and client
         /// </summary>

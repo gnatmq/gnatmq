@@ -155,7 +155,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         /// <param name="protocolVersion">Protocol version</param>
         /// <returns>Bytes rapresentation</returns>
         public abstract byte[] GetBytes(byte protocolVersion);
-        
+
         /// <summary>
         /// Encode remaining length and insert it into message buffer
         /// </summary>
@@ -211,7 +211,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(name);
-            
+
             if ((fieldNames != null) && (fieldValues != null))
             {
                 sb.Append("(");
@@ -233,7 +233,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
                 }
                 sb.Append(")");
             }
-            
+
             return sb.ToString();
         }
 

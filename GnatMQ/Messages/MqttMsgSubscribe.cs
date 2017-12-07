@@ -56,7 +56,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         string[] topics;
         // QOS levels related to topics
         byte[] qosLevels;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -64,7 +64,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         {
             this.type = MQTT_MSG_SUBSCRIBE_TYPE;
         }
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -231,7 +231,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
                 buffer[index] |= this.dupFlag ? (byte)(1 << DUP_FLAG_OFFSET) : (byte)0x00;
                 index++;
             }
-            
+
             // encode remaining length
             index = this.encodeRemainingLength(remainingLength, buffer, index);
 
@@ -253,7 +253,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
                 // requested QoS
                 buffer[index++] = this.qosLevels[topicIdx];
             }
-            
+
             return buffer;
         }
 

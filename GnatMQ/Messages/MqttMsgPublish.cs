@@ -51,7 +51,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         private string topic;
         // message data
         private byte[] message;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -121,12 +121,12 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             varHeaderSize += topicUtf8.Length + 2;
 
             // message id is valid only with QOS level 1 or QOS level 2
-            if ((this.qosLevel == QOS_LEVEL_AT_LEAST_ONCE) || 
+            if ((this.qosLevel == QOS_LEVEL_AT_LEAST_ONCE) ||
                 (this.qosLevel == QOS_LEVEL_EXACTLY_ONCE))
             {
                 varHeaderSize += MESSAGE_ID_SIZE;
             }
-            
+
             // check on message with zero length
             if (this.message != null)
                 // message data
@@ -226,7 +226,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             msg.dupFlag = (((fixedHeaderFirstByte & DUP_FLAG_MASK) >> DUP_FLAG_OFFSET) == 0x01);
             // read retain flag from fixed header
             msg.retain = (((fixedHeaderFirstByte & RETAIN_FLAG_MASK) >> RETAIN_FLAG_OFFSET) == 0x01);
-            
+
             // message id is valid only with QOS level 1 or QOS level 2
             if ((msg.qosLevel == QOS_LEVEL_AT_LEAST_ONCE) ||
                 (msg.qosLevel == QOS_LEVEL_EXACTLY_ONCE))

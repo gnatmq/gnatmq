@@ -52,7 +52,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         /// <summary>
         /// Unique key
         /// </summary>
-        public string Key 
+        public string Key
         {
             get { return this.Flow + "_" + this.Message.MessageId; }
         }
@@ -118,7 +118,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         /// QOS = 2, start first phase handshake send PUBREC
         /// </summary>
         SendPubrec,
-        
+
         /// <summary>
         /// QOS = 2, start second phase handshake send PUBREL
         /// </summary>

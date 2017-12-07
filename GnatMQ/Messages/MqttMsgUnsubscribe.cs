@@ -45,7 +45,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
 
         // topics to unsubscribe
         string[] topics;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -53,7 +53,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         {
             this.type = MQTT_MSG_UNSUBSCRIBE_TYPE;
         }
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -201,7 +201,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
                 buffer[index] |= this.dupFlag ? (byte)(1 << DUP_FLAG_OFFSET) : (byte)0x00;
                 index++;
             }
-            
+
             // encode remaining length
             index = this.encodeRemainingLength(remainingLength, buffer, index);
 
@@ -220,7 +220,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
                 Array.Copy(topicsUtf8[topicIdx], 0, buffer, index, topicsUtf8[topicIdx].Length);
                 index += topicsUtf8[topicIdx].Length;
             }
-            
+
             return buffer;
         }
 
