@@ -59,9 +59,9 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         /// Constructor (published message)
         /// </summary>
         /// <param name="messageId">Message identifier published</param>
-        public MqttMsgPublishedEventArgs(ushort messageId) 
-            : this(messageId, true) 
-        { 
+        public MqttMsgPublishedEventArgs(ushort messageId)
+            : this(messageId, true)
+        {
         }
 
         /// <summary>

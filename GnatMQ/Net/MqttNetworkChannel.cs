@@ -50,8 +50,8 @@ namespace uPLibrary.Networking.M2Mqtt
 
         // socket for communication
         private Socket socket;
-		// IP Address of the client connected to Broker
-		public IPEndPoint RemoteEndPoint;
+        // IP Address of the client connected to Broker
+        public IPEndPoint RemoteEndPoint;
         // using SSL
         private bool secure;
 
@@ -148,7 +148,7 @@ namespace uPLibrary.Networking.M2Mqtt
 #endif
         {
             this.socket = socket;
-			this.RemoteEndPoint = (IPEndPoint)socket.RemoteEndPoint;
+            this.RemoteEndPoint = (IPEndPoint)socket.RemoteEndPoint;
             this.secure = secure;
             this.serverCert = serverCert;
             this.sslProtocol = sslProtocol;
@@ -488,10 +488,12 @@ namespace uPLibrary.Networking.M2Mqtt
                     return SslProtocols.Ssl3;
                 case MqttSslProtocols.TLSv1_0:
                     return SslProtocols.Tls;
+#if (FRAMEWORK_VERSION_V4_5 || FRAMEWORK_VERSION_V4_5_1 || FRAMEWORK_VERSION_V4_5_2 || FRAMEWORK_VERSION_V4_6 || FRAMEWORK_VERSION_V4_6_1)
                 case MqttSslProtocols.TLSv1_1:
                     return SslProtocols.Tls11;
                 case MqttSslProtocols.TLSv1_2:
                     return SslProtocols.Tls12;
+#endif
                 default:
                     throw new ArgumentException("SSL/TLS protocol version not supported");
             }

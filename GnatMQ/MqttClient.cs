@@ -311,7 +311,7 @@ namespace uPLibrary.Networking.M2Mqtt
 #if !(WINDOWS_APP || WINDOWS_PHONE_APP)
         /// <param name="caCert">CA certificate for secure connection</param>
         /// <param name="clientCert">Client certificate</param>
-        public MqttClient(string brokerHostName, int brokerPort, bool secure, X509Certificate caCert, X509Certificate clientCert, MqttSslProtocols sslProtocol, int connectTimeout)            
+        public MqttClient(string brokerHostName, int brokerPort, bool secure, X509Certificate caCert, X509Certificate clientCert, MqttSslProtocols sslProtocol, int connectTimeout)
 #else
         public MqttClient(string brokerHostName, int brokerPort, bool secure, MqttSslProtocols sslProtocol)            
 #endif
@@ -391,7 +391,7 @@ namespace uPLibrary.Networking.M2Mqtt
 
             this.channel = channel;
 #if !(WINDOWS_APP || WINDOWS_PHONE_APP)
-			this.RemoteEndPoint = (this.channel as MqttNetworkChannel).RemoteEndPoint;
+            this.RemoteEndPoint = (this.channel as MqttNetworkChannel).RemoteEndPoint;
 #endif
 
             // reference to MQTT settings
@@ -419,15 +419,15 @@ namespace uPLibrary.Networking.M2Mqtt
         }
 #endif
 
-            /// <summary>
-            /// MqttClient initialization
-            /// </summary>
-            /// <param name="brokerHostName">Broker Host Name or IP Address</param>
-            /// <param name="brokerPort">Broker port</param>
-            /// <param name="secure">>Using secure connection</param>
-            /// <param name="caCert">CA certificate for secure connection</param>
-            /// <param name="clientCert">Client certificate</param>
-            /// <param name="sslProtocol">SSL/TLS protocol version</param>
+        /// <summary>
+        /// MqttClient initialization
+        /// </summary>
+        /// <param name="brokerHostName">Broker Host Name or IP Address</param>
+        /// <param name="brokerPort">Broker port</param>
+        /// <param name="secure">>Using secure connection</param>
+        /// <param name="caCert">CA certificate for secure connection</param>
+        /// <param name="clientCert">Client certificate</param>
+        /// <param name="sslProtocol">SSL/TLS protocol version</param>
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK || WINDOWS_APP || WINDOWS_PHONE_APP)
         /// <param name="userCertificateSelectionCallback">A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party</param>
         /// <param name="userCertificateValidationCallback">A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication</param>
@@ -666,43 +666,43 @@ namespace uPLibrary.Networking.M2Mqtt
         private void Close()
 #endif
         {
-			if (this.IsConnected)
-			{
-				// stop receiving thread
-				this.isRunning = false;
+            if (this.IsConnected)
+            {
+                // stop receiving thread
+                this.isRunning = false;
 
-				// wait end receive event thread
-				if (this.receiveEventWaitHandle != null)
-					this.receiveEventWaitHandle.Set();
+                // wait end receive event thread
+                if (this.receiveEventWaitHandle != null)
+                    this.receiveEventWaitHandle.Set();
 
-				if (this.closeEventWaitHandle != null)
-					this.closeEventWaitHandle.Set();
+                if (this.closeEventWaitHandle != null)
+                    this.closeEventWaitHandle.Set();
 
-				// wait end process inflight thread
-				if (this.inflightWaitHandle != null)
-					this.inflightWaitHandle.Set();
+                // wait end process inflight thread
+                if (this.inflightWaitHandle != null)
+                    this.inflightWaitHandle.Set();
 
 #if BROKER
-				// unlock keep alive thread
-				this.keepAliveEvent.Set();
+                // unlock keep alive thread
+                this.keepAliveEvent.Set();
 #else
-				// unlock keep alive thread and wait
-				this.keepAliveEvent.Set();
+                // unlock keep alive thread and wait
+                this.keepAliveEvent.Set();
 
-				if (this.keepAliveEventEnd != null)
-					this.keepAliveEventEnd.WaitOne();
+                if (this.keepAliveEventEnd != null)
+                    this.keepAliveEventEnd.WaitOne();
 #endif
 
-				// clear all queues
-				this.inflightQueue.Clear();
-				this.internalQueue.Clear();
-				this.eventQueue.Clear();
+                // clear all queues
+                this.inflightQueue.Clear();
+                this.internalQueue.Clear();
+                this.eventQueue.Clear();
 
-				// close network channel
-				this.channel.Close();
+                // close network channel
+                this.channel.Close();
 
-				this.IsConnected = false;
-			}
+                this.IsConnected = false;
+            }
         }
 
         /// <summary>
@@ -1643,7 +1643,7 @@ namespace uPLibrary.Networking.M2Mqtt
                     else if ((e.GetType() == typeof(IOException)) || (e.GetType() == typeof(SocketException)) ||
                              ((e.InnerException != null) && (e.InnerException.GetType() == typeof(SocketException)))) // added for SSL/TLS incoming connection that use SslStream that wraps SocketException
 #else
-					else if (e.GetType() == typeof(System.AggregateException))
+                    else if (e.GetType() == typeof(System.AggregateException))
 #endif
                     {
                         close = true;
@@ -1691,8 +1691,8 @@ namespace uPLibrary.Networking.M2Mqtt
                         this.OnConnectionClosing();
 #else
                         // ... send keep alive
-						this.Ping();
-						wait = this.keepAlivePeriod;
+                        this.Ping();
+                        wait = this.keepAlivePeriod;
 #endif
                     }
                     else
@@ -1752,7 +1752,7 @@ namespace uPLibrary.Networking.M2Mqtt
                     {
                         if (this.eventQueue.Count > 0)
                             internalEvent = (InternalEvent)this.eventQueue.Dequeue();
-                        
+
 #if TRACE
                         MqttUtility.Trace.WriteLine(TraceLevel.Verbose, "eventQueue count {0}", this.eventQueue.Count);
 #endif
@@ -1865,18 +1865,18 @@ namespace uPLibrary.Networking.M2Mqtt
                         }
                     }
 
-					// all events for received messages dispatched, check if there is closing connection
-					if (this.isRunning)
-					{
-						if ((this.eventQueue.Count == 0) && this.isConnectionClosing)
-						{
-							// client must close connection
-							this.Close();
+                    // all events for received messages dispatched, check if there is closing connection
+                    if (this.isRunning)
+                    {
+                        if ((this.eventQueue.Count == 0) && this.isConnectionClosing)
+                        {
+                            // client must close connection
+                            this.Close();
 
-							// client raw disconnection
-							this.OnConnectionClosed();
-						}
-					}
+                            // client raw disconnection
+                            this.OnConnectionClosed();
+                        }
+                    }
                 }
             }
         }

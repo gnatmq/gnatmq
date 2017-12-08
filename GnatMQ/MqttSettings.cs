@@ -70,7 +70,7 @@ namespace uPLibrary.Networking.M2Mqtt
         /// Inflight queue size
         /// </summary>
         public int InflightQueueSize { get; set; }
-        
+
         /// <summary>
         /// Singleton instance of settings
         /// </summary>
