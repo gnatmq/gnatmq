@@ -174,8 +174,8 @@ namespace uPLibrary.Networking.M2Mqtt.Communication
         {
             // create listener...
 #if COMPACT_FRAMEWORK
-			// With IPAddress.IPv6Any it doesn't works correctly on WinCE
-			this.listener = new TcpListener(IPAddress.Any, this.Port);
+            // With IPAddress.IPv6Any it doesn't works correctly on WinCE
+            this.listener = new TcpListener(IPAddress.Any, this.Port);
 #else
             this.listener = new TcpListener(IPAddress.IPv6Any, this.Port);
 #endif

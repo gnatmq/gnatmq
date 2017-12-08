@@ -686,11 +686,11 @@ namespace uPLibrary.Networking.M2Mqtt
                 // unlock keep alive thread
                 this.keepAliveEvent.Set();
 #else
-				// unlock keep alive thread and wait
-				this.keepAliveEvent.Set();
+                // unlock keep alive thread and wait
+                this.keepAliveEvent.Set();
 
-				if (this.keepAliveEventEnd != null)
-					this.keepAliveEventEnd.WaitOne();
+                if (this.keepAliveEventEnd != null)
+                    this.keepAliveEventEnd.WaitOne();
 #endif
 
                 // clear all queues
@@ -1643,7 +1643,7 @@ namespace uPLibrary.Networking.M2Mqtt
                     else if ((e.GetType() == typeof(IOException)) || (e.GetType() == typeof(SocketException)) ||
                              ((e.InnerException != null) && (e.InnerException.GetType() == typeof(SocketException)))) // added for SSL/TLS incoming connection that use SslStream that wraps SocketException
 #else
-					else if (e.GetType() == typeof(System.AggregateException))
+                    else if (e.GetType() == typeof(System.AggregateException))
 #endif
                     {
                         close = true;
@@ -1691,8 +1691,8 @@ namespace uPLibrary.Networking.M2Mqtt
                         this.OnConnectionClosing();
 #else
                         // ... send keep alive
-						this.Ping();
-						wait = this.keepAlivePeriod;
+                        this.Ping();
+                        wait = this.keepAlivePeriod;
 #endif
                     }
                     else

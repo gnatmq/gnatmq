@@ -25,7 +25,7 @@ namespace uPLibrary.Networking.M2Mqtt
     /// <summary>
     /// MQTT client collection
     /// </summary>
-    public class MqttClientCollection : IList<MqttClient>, IEnumerable
+    public class MqttClientCollection : IList<MqttClient>, IEnumerable<MqttClient>
     {
         // clients list
         private List<MqttClient> clients;
@@ -39,7 +39,11 @@ namespace uPLibrary.Networking.M2Mqtt
 
         public IEnumerator GetEnumerator()
         {
-            return this.clients.GetEnumerator();
+            lock (this.clients)
+            {
+                foreach (var client in this.clients)
+                    yield return client;
+            }
         }
 
         #endregion
@@ -83,22 +87,31 @@ namespace uPLibrary.Networking.M2Mqtt
 
         public void Clear()
         {
-            this.clients.Clear();
+            lock (this.clients)
+            {
+                this.clients.Clear();
+            }
         }
 
         public bool Contains(MqttClient item)
         {
-            return this.clients.Contains(item);
+            lock (this.clients)
+            {
+                return this.clients.Contains(item);
+            }
         }
 
         public void CopyTo(MqttClient[] array, int arrayIndex)
         {
-            this.clients.CopyTo(array, arrayIndex);
+            lock (this.clients)
+            {
+                this.clients.CopyTo(array, arrayIndex);
+            }
         }
 
         public int Count
         {
-            get { return this.clients.Count; }
+            get { lock (this.clients) return this.clients.Count; }
         }
 
         public bool IsReadOnly
@@ -116,7 +129,11 @@ namespace uPLibrary.Networking.M2Mqtt
 
         IEnumerator<MqttClient> IEnumerable<MqttClient>.GetEnumerator()
         {
-            return this.clients.GetEnumerator();
+            lock (this.clients)
+            {
+                foreach (var client in this.clients)
+                    yield return client;
+            }
         }
 
         #endregion
