@@ -4,6 +4,11 @@
 
 GnatMQ - MQTT Broker for .NET and WinRT
 
+## Alternatives
+This repository is not well maintained, and the code is a bit dated. 
+[MQTTnet](https://github.com/chkr1011/MQTTnet) is the direct alternative, and better maintained. 
+[dotNetty](https://github.com/Azure/DotNetty) is a Microsoft-supported generic messaging server that supports MQTT transport. That's a good option is you want to use the protocol to talk to a server, rather than to use it as a broker.
+
 ## Description
 
 A broker (server) for the MQTT protocol, an M2M Internet-of-Things communication protocol based on .Net Framework. 
