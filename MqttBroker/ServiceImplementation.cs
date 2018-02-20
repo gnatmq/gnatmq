@@ -30,7 +30,12 @@ namespace MqttBrokerService
         {
 #if TRACE
             MqttUtility.Trace.TraceLevel = MqttUtility.TraceLevel.Verbose | MqttUtility.TraceLevel.Frame;
-            MqttUtility.Trace.TraceListener = (f, a) => log.DebugFormat(f, a);
+            MqttUtility.Trace.ErrorListener = (f, a) => log.ErrorFormat(f, a);
+            MqttUtility.Trace.WarningListener = (f, a) => log.WarnFormat(f, a);
+            MqttUtility.Trace.InformationListener = (f, a) => log.InfoFormat(f, a);
+            MqttUtility.Trace.VerboseListener = (f, a) => log.DebugFormat(f, a);
+            MqttUtility.Trace.FrameListener = (f, a) => log.DebugFormat(f, a);
+            MqttUtility.Trace.QueuingListener = (f, a) => log.DebugFormat(f, a);
 #endif
         }
 

@@ -40,47 +40,40 @@ namespace uPLibrary.Networking.M2Mqtt.Utility
     public static class Trace
     {
         public static TraceLevel TraceLevel;
-        public static WriteTrace TraceListener;
-
-        [Conditional("DEBUG")]
-        public static void Debug(string format, params object[] args)
-        {
-            if (TraceListener != null)
-            {
-                TraceListener(format, args);
-            }
-        }
-
-        public static void WriteLine(TraceLevel level, string format)
-        {
-            if (TraceListener != null && (level & TraceLevel) > 0)
-            {
-                TraceListener(format);
-            }
-        }
+        public static WriteTrace ErrorListener;
+        public static WriteTrace WarningListener;
+        public static WriteTrace InformationListener;
+        public static WriteTrace VerboseListener;
+        public static WriteTrace FrameListener;
+        public static WriteTrace QueuingListener;
 
         public static void WriteLine(TraceLevel level, string format, object arg1)
         {
-            if (TraceListener != null && (level & TraceLevel) > 0)
+            if ((level & TraceLevel) > 0)
             {
-                TraceListener(format, arg1);
+                switch (level)
+                {
+                    case TraceLevel.Error:
+                        ErrorListener?.Invoke(format, arg1);
+                        break;
+                    case TraceLevel.Warning:
+                        WarningListener?.Invoke(format, arg1);
+                        break;
+                    case TraceLevel.Information:
+                        InformationListener?.Invoke(format, arg1);
+                        break;
+                    case TraceLevel.Verbose:
+                        VerboseListener?.Invoke(format, arg1);
+                        break;
+                    case TraceLevel.Frame:
+                        FrameListener?.Invoke(format, arg1);
+                        break;
+                    case TraceLevel.Queuing:
+                        QueuingListener?.Invoke(format, arg1);
+                        break;
+                }
             }
         }
 
-        public static void WriteLine(TraceLevel level, string format, object arg1, object arg2)
-        {
-            if (TraceListener != null && (level & TraceLevel) > 0)
-            {
-                TraceListener(format, arg1, arg2);
-            }
-        }
-
-        public static void WriteLine(TraceLevel level, string format, object arg1, object arg2, object arg3)
-        {
-            if (TraceListener != null && (level & TraceLevel) > 0)
-            {
-                TraceListener(format, arg1, arg2, arg3);
-            }
-        }
     }
 }

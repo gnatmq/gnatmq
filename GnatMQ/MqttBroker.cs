@@ -23,6 +23,7 @@ using uPLibrary.Networking.M2Mqtt.Exceptions;
 using uPLibrary.Networking.M2Mqtt.Managers;
 using uPLibrary.Networking.M2Mqtt.Communication;
 using uPLibrary.Networking.M2Mqtt.Session;
+using uPLibrary.Networking.M2Mqtt.Utility;
 #if SSL
 #if !(WINDOWS_APP || WINDOWS_PHONE_APP)
 using System.Security.Cryptography.X509Certificates;
@@ -174,6 +175,8 @@ namespace uPLibrary.Networking.M2Mqtt
 
                     // publish message through publisher manager
                     this.publisherManager.Publish(publish);
+
+                    Trace.WriteLine(TraceLevel.Information, "SEND LWT: topic {0}", client.WillTopic);
                 }
 
                 // if not clean session

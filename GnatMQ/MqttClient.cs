@@ -1388,7 +1388,7 @@ namespace uPLibrary.Networking.M2Mqtt
 #if BROKER
                                 MqttMsgConnect connect = MqttMsgConnect.Parse(fixedHeaderFirstByte[0], (byte)this.ProtocolVersion, this.channel);
 #if TRACE
-                                Trace.WriteLine(TraceLevel.Frame, "RECV {0}", connect);
+                                Trace.WriteLine(TraceLevel.Information, "RECV {0}", connect);
 #endif
 
                                 // raise message received event
@@ -1449,7 +1449,7 @@ namespace uPLibrary.Networking.M2Mqtt
 #if BROKER
                                 MqttMsgSubscribe subscribe = MqttMsgSubscribe.Parse(fixedHeaderFirstByte[0], (byte)this.ProtocolVersion, this.channel);
 #if TRACE
-                                Trace.WriteLine(TraceLevel.Frame, "RECV {0}", subscribe);
+                                Trace.WriteLine(TraceLevel.Information, "RECV {0}", subscribe);
 #endif
 
                                 // raise message received event
@@ -1553,7 +1553,7 @@ namespace uPLibrary.Networking.M2Mqtt
 #if BROKER
                                 MqttMsgUnsubscribe unsubscribe = MqttMsgUnsubscribe.Parse(fixedHeaderFirstByte[0], (byte)this.ProtocolVersion, this.channel);
 #if TRACE
-                                Trace.WriteLine(TraceLevel.Frame, "RECV {0}", unsubscribe);
+                                Trace.WriteLine(TraceLevel.Information, "RECV {0}", unsubscribe);
 #endif
 
                                 // raise message received event
@@ -1588,7 +1588,7 @@ namespace uPLibrary.Networking.M2Mqtt
 #if BROKER
                                 MqttMsgDisconnect disconnect = MqttMsgDisconnect.Parse(fixedHeaderFirstByte[0], (byte)this.ProtocolVersion, this.channel);
 #if TRACE
-                                Trace.WriteLine(TraceLevel.Frame, "RECV {0}", disconnect);
+                                Trace.WriteLine(TraceLevel.Information, "RECV {0}", disconnect);
 #endif
 
                                 // raise message received event
