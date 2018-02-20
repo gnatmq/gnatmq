@@ -2,7 +2,7 @@
 
 ![](images/gnat.jpg)
 
-GnatMQ - MQTT Broker for .NET and WinRT
+GnatMQ - MQTT Broker for .NET
 
 ## Project Description
 
