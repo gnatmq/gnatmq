@@ -175,7 +175,7 @@ namespace MqttBrokerService.Framework
             // if a user name is not provided, will run under local service acct
             if (string.IsNullOrEmpty(Configuration.UserName))
             {
-                result.Account = ServiceAccount.LocalService;
+                result.Account = ServiceAccount.LocalSystem;
                 result.Username = null;
                 result.Password = null;
             }
