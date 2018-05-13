@@ -18,11 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MessageClient;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt.Exceptions;
 using uPLibrary.Networking.M2Mqtt.Managers;
 using uPLibrary.Networking.M2Mqtt.Communication;
 using uPLibrary.Networking.M2Mqtt.Session;
+using Newtonsoft.Json;
+using System.IO;
 #if SSL
 #if !(WINDOWS_APP || WINDOWS_PHONE_APP)
 using System.Security.Cryptography.X509Certificates;
@@ -59,6 +62,11 @@ namespace uPLibrary.Networking.M2Mqtt
 
         // MQTT communication layer
         private IMqttCommunicationLayer commLayer;
+
+        /// <summary>
+        /// RabbitMQ broker
+        /// </summary>
+        public CommBroker commBroker;
 
         /// <summary>
         /// User authentication method
@@ -144,6 +152,10 @@ namespace uPLibrary.Networking.M2Mqtt
         {
             this.commLayer.Start();
             this.publisherManager.Start();
+            Console.WriteLine("Broker Started");
+            MqttCommon.LogMessageToFile("Broker Started");
+
+
         }
 
         /// <summary>
@@ -162,6 +174,8 @@ namespace uPLibrary.Networking.M2Mqtt
 					client.Close();
 				}
 			}
+            Console.WriteLine("Broker Stopped");
+            MqttCommon.LogMessageToFile("Broker Stopped");
         }
 
         /// <summary>
@@ -199,7 +213,7 @@ namespace uPLibrary.Networking.M2Mqtt
 					}
 
 					// Waits end messages publication
-					publisherManager.PublishMessagesEventEnd.WaitOne();
+					//publisherManager.PublishMessagesEventEnd.WaitOne();
 
 					// delete client from runtime subscription
 					this.subscriberManager.Unsubscribe(client);
@@ -231,19 +245,58 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // start client threads
             e.Client.Open();
+            MqttCommon.LogMessageToFile("Broker - Client Connected");
         }
 
         void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            MqttClient client = (MqttClient)sender;
+            try
+            {
+                Console.WriteLine("Message Published");
+                
+                //DmMessage dmMessage = null;
+                string ipAddress;
+                commBroker = new CommBroker();
 
-            // create PUBLISH message to publish
-            // [v3.1.1] DUP flag from an incoming PUBLISH message is not propagated to subscribers
-            //          It should be set in the outgoing PUBLISH message based on transmission for each subscriber
-            MqttMsgPublish publish = new MqttMsgPublish(e.Topic, e.Message, false, e.QosLevel, e.Retain);
+                byte[] publishMessageByte;
+                MqttClient client = (MqttClient)sender;
+                ipAddress = client.RemoteEndPoint.ToString().Substring(8,
+                (client.RemoteEndPoint.ToString().IndexOf(']') - 8));
+                //publishMessageString = Convert.ToBase64String(e.Message) + ipAddress;
+                //publishMessageByte = Encoding.UTF8.GetBytes(publishMessageString); //Encoding.ASCII.GetBytes(publishMessageString);
+                DmMessage dmMessage = new DmMessage();
+                dmMessage.publicIpAddress = ipAddress;
+                dmMessage.data = Convert.ToBase64String(e.Message);
+                dmMessage.ToString();
+                var publishMessageString = Newtonsoft.Json.JsonConvert.SerializeObject(dmMessage);
+                publishMessageByte = Encoding.UTF8.GetBytes(publishMessageString.ToString());
 
-            // publish message through publisher manager
-            this.publisherManager.Publish(publish);
+                CommMessage message = new CommMessage()
+                {
+                    subject = e.Topic.Replace("/","."),
+                    data = publishMessageString,
+                    data_length = publishMessageString.Length,
+                    message_type = "string",
+                    correlation_id = "",
+                    reply_to = ""
+                };
+
+                // create PUBLISH message to publish
+                // [v3.1.1] DUP flag from an incoming PUBLISH message is not propagated to subscribers
+                //          It should be set in the outgoing PUBLISH message based on transmission for each subscriber
+                //MqttMsgPublish publish = new MqttMsgPublish(e.Topic, publishMessageByte, false, e.QosLevel, e.Retain);
+
+                // publish message through publisher manager
+                //this.publisherManager.Publish(publish);
+                commBroker.connect(e.Topic);
+                MqttCommon.LogMessageToFile("Connected to RabbitMQ");
+                commBroker.publish(message, false);
+                MqttCommon.LogMessageToFile("Topic Name:" + message.subject.ToString());
+                MqttCommon.LogMessageToFile("Message Published:" + publishMessageString.ToString());
+                MqttCommon.LogMessageToFile("Message Published");
+                commBroker.disconnect();
+            }
+            catch (Exception ex) { MqttCommon.LogMessageToFile("Error:Message Publish - Failed");  }
         }
 
         void Client_MqttMsgUnsubscribeReceived(object sender, MqttMsgUnsubscribeEventArgs e)
@@ -270,26 +323,44 @@ namespace uPLibrary.Networking.M2Mqtt
         void Client_MqttMsgSubscribeReceived(object sender, MqttMsgSubscribeEventArgs e)
         {
             MqttClient client = (MqttClient)sender;
+            //client.Subscribe(e.Topics, e.QoSLevels);
 
-            for (int i = 0; i < e.Topics.Length; i++)
-            {
+            int i = 0;
+            //for (int i = 0; i < e.Topics.Length; i++)
+            //{
+            commBroker = new CommBroker();
+                commBroker.connect(e.Topics[i]);
+                if (!commBroker.connected)
+                    throw new Exception("Unable to connect the broker for subscribing message");
+                commBroker.disable_heartbeat = true;
+                MqttCommon.LogMessageToFile("Subscribed to:" + e.Topics[i].Replace("/", ".").Replace("+","*").ToString());
+            MqttCommon.LogMessageToFile("Topics Subscribed :" + e.Topics.Length.ToString());
+            Subscription subscription = commBroker.new_subscription(e.Topics[i].Replace("/", ".").Replace("+", "*"), string.Empty, (message, context) =>
+                {
+                    client.Publish(message.subject.Replace(".","/"), Convert.FromBase64String(message.data.ToString()));// System.Text.Encoding.UTF8.GetBytes(message.data.ToString()));
+                    Console.WriteLine("Message Received");
+                    MqttCommon.LogMessageToFile("Message Received");
+                    Console.WriteLine("From Topic:"+ message.subject.Replace(".", "/") + ". Data:" +message.data.ToString());
+                    MqttCommon.LogMessageToFile("From Topic:" + message.subject.Replace(".", "/") + ". Data:" + message.data.ToString());
+                }, null, commBroker, string.Empty);
+
                 // TODO : business logic to grant QoS levels based on some conditions ?
                 //        now the broker granted the QoS levels requested by client
 
                 // subscribe client for each topic and QoS level requested
-                this.subscriberManager.Subscribe(e.Topics[i], e.QoSLevels[i], client);
-            }
+                //this.subscriberManager.Subscribe(e.Topics[i].Replace("/", ".").Replace("+", "*"), e.QoSLevels[i], client);
+            //}
 
             try
             {
                 // send SUBACK message to the client
                 client.Suback(e.MessageId, e.QoSLevels);
 
-                for (int i = 0; i < e.Topics.Length; i++)
-                {
-                    // publish retained message on the current subscription
-                    this.publisherManager.PublishRetaind(e.Topics[i], client.ClientId);
-                }
+                //for (int i = 0; i < e.Topics.Length; i++)
+                //{
+                //    // publish retained message on the current subscription
+                //    //this.publisherManager.PublishRetaind(e.Topics[i], client.ClientId);
+                //}
             }
             catch (MqttCommunicationException)
             {
@@ -481,5 +552,7 @@ namespace uPLibrary.Networking.M2Mqtt
 				return query.FirstOrDefault();
 			}
 		}
-	}
+
+
+    }
 }
