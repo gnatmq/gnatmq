@@ -49,22 +49,22 @@ namespace uPLibrary.Networking.M2Mqtt
         /// <summary>
         /// Timeout on client connection (before receiving CONNECT message)
         /// </summary>
-        public int TimeoutOnConnection { get; internal set; }
+        public int TimeoutOnConnection { get; set; }
 
         /// <summary>
         /// Timeout on receiving
         /// </summary>
-        public int TimeoutOnReceiving { get; internal set; }
+        public int TimeoutOnReceiving { get; set; }
 
         /// <summary>
         /// Attempts on retry
         /// </summary>
-        public int AttemptsOnRetry { get; internal set; }
+        public int AttemptsOnRetry { get; set; }
 
         /// <summary>
         /// Delay on retry
         /// </summary>
-        public int DelayOnRetry { get; internal set; }
+        public int DelayOnRetry { get; set; }
 
         /// <summary>
         /// Inflight queue size
